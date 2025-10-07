@@ -35,7 +35,7 @@ export default function Home() {
           onClick={() => window.location.href = `/${locale}/play`}
           className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 transition-transform"
         >
-          🎮 {locale === 'sv' ? 'Leka med Luggisarna!' : 'Play with the Luggies!'}
+          🎮 {t('playButton')}
         </button>
       </section>
 
@@ -46,7 +46,7 @@ export default function Home() {
           rel="noopener noreferrer" 
           className="hover:underline"
         >
-          {locale === 'sv' ? 'Se oss på YouTube' : 'Watch us on YouTube'}
+          {t('watchYouTube')}
         </a>
       </footer>
     </div>

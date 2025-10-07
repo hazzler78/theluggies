@@ -1,6 +1,7 @@
 "use client";
 import {useEffect, useMemo, useState} from 'react';
 import {formatInTimeZone} from 'date-fns-tz';
+import {useTranslations} from '@/contexts/LocaleContext';
 
 function getNextSaturdayAt15Stockholm(now = new Date()) {
   const stockholmTz = 'Europe/Stockholm';
@@ -18,6 +19,7 @@ function getNextSaturdayAt15Stockholm(now = new Date()) {
 }
 
 export function YouTubeSchedule() {
+  const t = useTranslations('site');
   const [now, setNow] = useState(() => new Date());
   const target = useMemo(() => getNextSaturdayAt15Stockholm(now), [now]);
 
@@ -36,10 +38,15 @@ export function YouTubeSchedule() {
 
   return (
     <div className="rounded-2xl border p-4 bg-white/60 dark:bg-white/5">
-      <h3 className="text-lg font-semibold mb-2">Next episode</h3>
+      <h3 className="text-lg font-semibold mb-2">{t('nextEpisode')}</h3>
       <p className="opacity-80 mb-3">{when}</p>
       <div className="grid grid-cols-4 gap-2 text-center">
-        {[{label: 'Days', value: days}, {label: 'Hours', value: hours}, {label: 'Minutes', value: minutes}, {label: 'Seconds', value: seconds}].map((i) => (
+        {[
+          {label: t('days'), value: days}, 
+          {label: t('hours'), value: hours}, 
+          {label: t('minutes'), value: minutes}, 
+          {label: t('seconds'), value: seconds}
+        ].map((i) => (
           <div key={i.label} className="rounded-xl bg-foreground text-background p-3">
             <div className="text-2xl font-bold tabular-nums">{i.value}</div>
             <div className="text-xs uppercase tracking-wide opacity-85">{i.label}</div>
