@@ -48,7 +48,7 @@ function Character({
   const [expression, setExpression] = useState<'idle' | 'surprised' | 'happy'>('idle');
   
   const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 640;
-  const springConfig = {damping: isSmallScreen ? 40 : 25, stiffness: isSmallScreen ? 160 : 200};
+  const springConfig = {damping: isSmallScreen ? 50 : 25, stiffness: isSmallScreen ? 120 : 200};
   const x = useSpring(position.x, springConfig);
   const y = useSpring(position.y, springConfig);
   const rotate = useSpring(0, springConfig);
@@ -151,7 +151,7 @@ function Character({
       const distanceY = clientY - centerY;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
       
-      const detectionRadius = isSmallScreen ? 360 : 350;
+      const detectionRadius = isSmallScreen ? 280 : 350;
       
       if (distance < detectionRadius) {
         setIsBeingChased(true);
@@ -159,7 +159,7 @@ function Character({
         
         // RUN AWAY! Calculate escape direction
         const escapeStrength = Math.min((detectionRadius - distance) / detectionRadius, 1);
-        const escapeDistance = isSmallScreen ? 140 : 250;
+        const escapeDistance = isSmallScreen ? 180 : 250;
         
         const targetX = currentX - (distanceX / distance) * escapeDistance * escapeStrength;
         const targetY = currentY - (distanceY / distance) * escapeDistance * escapeStrength;
@@ -171,15 +171,19 @@ function Character({
         const clampedX = Math.max(-maxX, Math.min(maxX, targetX));
         const clampedY = Math.max(-maxY, Math.min(maxY, targetY));
 
-        // Blend towards target to avoid jitter on mobile
-        const alpha = isSmallScreen ? 0.35 : 0.6;
-        setPosition({
-          x: currentX + (clampedX - currentX) * alpha,
-          y: currentY + (clampedY - currentY) * alpha
-        });
+        // Smoother movement on mobile - bigger steps but less frequent
+        if (isSmallScreen) {
+          setPosition({x: clampedX, y: clampedY});
+        } else {
+          const alpha = 0.6;
+          setPosition({
+            x: currentX + (clampedX - currentX) * alpha,
+            y: currentY + (clampedY - currentY) * alpha
+          });
+        }
         
-        rotate.set(-(distanceX / Math.max(distance, 1)) * (isSmallScreen ? 10 : 20));
-        scale.set(isSmallScreen ? 1.08 : 1.2);
+        rotate.set(-(distanceX / Math.max(distance, 1)) * (isSmallScreen ? 8 : 20));
+        scale.set(isSmallScreen ? 1.05 : 1.2);
       } else {
         setIsBeingChased(false);
         setExpression('idle'); // Back to normal when safe
