@@ -1,5 +1,5 @@
 "use client";
-import {motion, useScroll, useTransform, useMotionValue, useSpring} from 'framer-motion';
+import {motion, useSpring} from 'framer-motion';
 import Lenis from 'lenis';
 import {useEffect, useRef, useState} from 'react';
 
