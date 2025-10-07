@@ -47,7 +47,8 @@ function Character({
   const [isBeingChased, setIsBeingChased] = useState(false);
   const [expression, setExpression] = useState<'idle' | 'surprised' | 'happy'>('idle');
   
-  const springConfig = {damping: 25, stiffness: 200};
+  const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 640;
+  const springConfig = {damping: isSmallScreen ? 40 : 25, stiffness: isSmallScreen ? 160 : 200};
   const x = useSpring(position.x, springConfig);
   const y = useSpring(position.y, springConfig);
   const rotate = useSpring(0, springConfig);
@@ -150,8 +151,7 @@ function Character({
       const distanceY = clientY - centerY;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
       
-      const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 640;
-      const detectionRadius = isSmallScreen ? 420 : 350;
+      const detectionRadius = isSmallScreen ? 360 : 350;
       
       if (distance < detectionRadius) {
         setIsBeingChased(true);
@@ -159,22 +159,27 @@ function Character({
         
         // RUN AWAY! Calculate escape direction
         const escapeStrength = Math.min((detectionRadius - distance) / detectionRadius, 1);
-        const escapeDistance = 250;
+        const escapeDistance = isSmallScreen ? 140 : 250;
         
-        const newX = currentX - (distanceX / distance) * escapeDistance * escapeStrength;
-        const newY = currentY - (distanceY / distance) * escapeDistance * escapeStrength;
+        const targetX = currentX - (distanceX / distance) * escapeDistance * escapeStrength;
+        const targetY = currentY - (distanceY / distance) * escapeDistance * escapeStrength;
         
         // Keep within bounds (with some padding)
         const maxX = (containerRect.width / 2) - 100;
         const maxY = (containerRect.height / 2) - 100;
         
+        const clampedX = Math.max(-maxX, Math.min(maxX, targetX));
+        const clampedY = Math.max(-maxY, Math.min(maxY, targetY));
+
+        // Blend towards target to avoid jitter on mobile
+        const alpha = isSmallScreen ? 0.35 : 0.6;
         setPosition({
-          x: Math.max(-maxX, Math.min(maxX, newX)),
-          y: Math.max(-maxY, Math.min(maxY, newY))
+          x: currentX + (clampedX - currentX) * alpha,
+          y: currentY + (clampedY - currentY) * alpha
         });
         
-        rotate.set(-(distanceX / distance) * 20);
-        scale.set(1.2);
+        rotate.set(-(distanceX / Math.max(distance, 1)) * (isSmallScreen ? 10 : 20));
+        scale.set(isSmallScreen ? 1.08 : 1.2);
       } else {
         setIsBeingChased(false);
         setExpression('idle'); // Back to normal when safe
@@ -183,11 +188,27 @@ function Character({
       }
     };
 
-    const handleMouseMove = (e: MouseEvent) => reactToPointer(e.clientX, e.clientY);
+    let rafId: number | null = null;
+    let queuedX = 0, queuedY = 0, hasQueue = false;
+
+    const flush = () => {
+      if (hasQueue) {
+        reactToPointer(queuedX, queuedY);
+        hasQueue = false;
+      }
+      rafId = null;
+    };
+
+    const schedule = (x: number, y: number) => {
+      queuedX = x; queuedY = y; hasQueue = true;
+      if (rafId == null) rafId = requestAnimationFrame(flush);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => schedule(e.clientX, e.clientY);
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches && e.touches[0]) {
         const t = e.touches[0];
-        reactToPointer(t.clientX, t.clientY);
+        schedule(t.clientX, t.clientY);
       }
     };
 
@@ -200,6 +221,7 @@ function Character({
       window.removeEventListener('touchstart', handleTouchMove as (e: Event) => void);
       window.removeEventListener('touchmove', handleTouchMove as (e: Event) => void);
       window.removeEventListener('touchend', handleTouchMove as (e: Event) => void);
+      if (rafId != null) cancelAnimationFrame(rafId);
     };
   }, [position, rotate, scale, containerRef]);
 

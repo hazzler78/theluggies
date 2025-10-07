@@ -9,8 +9,13 @@ export function LocaleSwitcher() {
 
   function switchTo(next: 'en' | 'sv') {
     if (next === locale) return;
-    const newPath = pathname.replace(`/${locale}`, `/${next}`);
-    router.push(newPath);
+    const parts = pathname.split('/').filter(Boolean);
+    if (parts[0] === 'en' || parts[0] === 'sv') {
+      parts[0] = next;
+    } else {
+      parts.unshift(next);
+    }
+    router.push('/' + parts.join('/'));
   }
 
   return (
