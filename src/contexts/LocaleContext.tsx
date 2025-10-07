@@ -1,7 +1,7 @@
 "use client";
 import {createContext, useContext} from 'react';
 
-type Messages = Record<string, any>;
+type Messages = Record<string, unknown>;
 
 interface LocaleContextType {
   locale: string;
@@ -38,11 +38,17 @@ export function useTranslations(namespace: string) {
   
   return (key: string) => {
     const keys = `${namespace}.${key}`.split('.');
-    let value: any = context.messages;
+    let value: unknown = context.messages;
     for (const k of keys) {
-      value = value?.[k];
+      // Safe traversal through nested message objects
+      if (typeof value === 'object' && value !== null && k in (value as Record<string, unknown>)) {
+        value = (value as Record<string, unknown>)[k];
+      } else {
+        value = undefined;
+        break;
+      }
     }
-    return value || key;
+    return (typeof value === 'string' || typeof value === 'number') ? String(value) : key;
   };
 }
 

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       status: 200,
       headers: {'Content-Type': 'application/json'}
     });
-  } catch (err) {
+  } catch {
     return new Response(JSON.stringify({ok: false}), {
       status: 400,
       headers: {'Content-Type': 'application/json'}

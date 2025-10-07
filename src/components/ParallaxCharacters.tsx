@@ -192,14 +192,14 @@ function Character({
     };
 
     window.addEventListener('mousemove', handleMouseMove, {passive: true});
-    window.addEventListener('touchstart', handleTouchMove, {passive: true});
-    window.addEventListener('touchmove', handleTouchMove, {passive: true});
-    window.addEventListener('touchend', handleTouchMove, {passive: true});
+    window.addEventListener('touchstart', handleTouchMove as (e: Event) => void, {passive: true});
+    window.addEventListener('touchmove', handleTouchMove as (e: Event) => void, {passive: true});
+    window.addEventListener('touchend', handleTouchMove as (e: Event) => void, {passive: true});
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchstart', handleTouchMove as any);
-      window.removeEventListener('touchmove', handleTouchMove as any);
-      window.removeEventListener('touchend', handleTouchMove as any);
+      window.removeEventListener('touchstart', handleTouchMove as (e: Event) => void);
+      window.removeEventListener('touchmove', handleTouchMove as (e: Event) => void);
+      window.removeEventListener('touchend', handleTouchMove as (e: Event) => void);
     };
   }, [position, rotate, scale, containerRef]);
 
