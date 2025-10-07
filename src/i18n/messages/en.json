@@ -1,0 +1,20 @@
+{
+  "site": {
+    "title": "The Luggies",
+    "tagline": "Colorful fun for neurodivergent kids",
+    "newsletter": "Join our newsletter",
+    "emailPlaceholder": "Your email",
+    "subscribe": "Subscribe",
+    "nextEpisode": "Next episode",
+    "saturday": "Every Saturday at 15:00 (Stockholm)",
+    "characters": {
+      "yellow": "Yellow",
+      "blue": "Blue",
+      "purple": "Purple"
+    },
+    "switchToEnglish": "English",
+    "switchToSwedish": "Svenska"
+  }
+}
+
+

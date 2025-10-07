@@ -1,0 +1,20 @@
+{
+  "site": {
+    "title": "The Luggies",
+    "tagline": "Färgglad glädje för neurodivergenta barn",
+    "newsletter": "Prenumerera på vårt nyhetsbrev",
+    "emailPlaceholder": "Din e‑post",
+    "subscribe": "Prenumerera",
+    "nextEpisode": "Nästa avsnitt",
+    "saturday": "Varje lördag kl 15:00 (Stockholm)",
+    "characters": {
+      "yellow": "Gul",
+      "blue": "Blå",
+      "purple": "Lila"
+    },
+    "switchToEnglish": "English",
+    "switchToSwedish": "Svenska"
+  }
+}
+
+
