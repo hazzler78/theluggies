@@ -1,7 +1,5 @@
 "use client";
-import {useTranslations} from '@/contexts/LocaleContext';
-import Link from 'next/link';
-import {useLocale} from '@/contexts/LocaleContext';
+import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 import {LocaleSwitcher} from '../../components/LocaleSwitcher';
 import {ParallaxCharacters} from '../../components/ParallaxCharacters';
 import {YouTubeSchedule} from '../../components/YouTubeSchedule';
@@ -27,11 +25,16 @@ export default function Home() {
 
       <section className="w-full max-w-md flex flex-col gap-4 items-center">
         <NewsletterForm />
-        <Link href={`/${locale}/play`} className="rounded-full bg-foreground text-background px-5 py-3 font-semibold">Play with the Luggies →</Link>
+        <button 
+          onClick={() => window.location.href = `/${locale}/play`}
+          className="rounded-full bg-foreground text-background px-5 py-3 font-semibold cursor-pointer"
+        >
+          Play with the Luggies →
+        </button>
       </section>
 
       <footer className="opacity-70 text-sm py-8">
-        <Link href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</Link>
+        <a href="https://youtube.com/@theluggies" target="_blank" rel="noopener noreferrer" className="hover:underline">YouTube</a>
       </footer>
     </div>
   );

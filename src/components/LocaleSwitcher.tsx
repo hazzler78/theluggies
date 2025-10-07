@@ -1,21 +1,19 @@
 "use client";
 import {useLocale} from '@/contexts/LocaleContext';
-import {useRouter, usePathname} from 'next/navigation';
 
 export function LocaleSwitcher() {
   const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
 
   function switchTo(next: 'en' | 'sv') {
     if (next === locale) return;
-    const parts = pathname.split('/').filter(Boolean);
+    const currentPath = window.location.pathname;
+    const parts = currentPath.split('/').filter(Boolean);
     if (parts[0] === 'en' || parts[0] === 'sv') {
       parts[0] = next;
     } else {
       parts.unshift(next);
     }
-    router.push('/' + parts.join('/'));
+    window.location.href = '/' + parts.join('/');
   }
 
   return (
