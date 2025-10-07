@@ -12,12 +12,20 @@ export function YouTubeSection() {
   
   const channelHandle = locale === 'sv' ? '@Luggisarna' : '@TheLuggies';
   
-  // Placeholder video IDs - replace with your actual video IDs
-  const videos = [
-    { id: 'dQw4w9WgXcQ', title: 'Latest Episode' },
-    { id: 'dQw4w9WgXcQ', title: 'Episode 2' },
-    { id: 'dQw4w9WgXcQ', title: 'Episode 3' },
-  ];
+  // Video IDs - add new video IDs here as they're released
+  const videos = locale === 'sv' 
+    ? [
+        // Swedish channel - add video IDs here when released
+        { id: null, title: 'Kommer snart' },
+        { id: null, title: 'Kommer snart' },
+        { id: null, title: 'Kommer snart' },
+      ]
+    : [
+        // English channel
+        { id: 'pHyEtPYPw_0', title: 'Episode 1' },
+        { id: null, title: 'Coming soon' },
+        { id: null, title: 'Coming soon' },
+      ];
 
   return (
     <div className="w-full">
@@ -31,18 +39,31 @@ export function YouTubeSection() {
             key={idx}
             className="rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-800"
           >
-            <div className="relative pb-[56.25%]">
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${video.id}`}
-                title={video.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className="p-4">
-              <p className="font-semibold text-sm opacity-80">{video.title}</p>
-            </div>
+            {video.id ? (
+              // Real video
+              <>
+                <div className="relative pb-[56.25%]">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="p-4">
+                  <p className="font-semibold text-sm opacity-80">{video.title}</p>
+                </div>
+              </>
+            ) : (
+              // Coming soon placeholder
+              <div className="relative pb-[56.25%] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4">
+                  <div className="text-4xl opacity-30">🎬</div>
+                  <p className="font-semibold text-sm opacity-60">{video.title}</p>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
