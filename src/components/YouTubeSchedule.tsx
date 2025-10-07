@@ -1,27 +1,30 @@
 "use client";
 import {useEffect, useMemo, useState} from 'react';
 import {formatInTimeZone} from 'date-fns-tz';
-import {useTranslations} from '@/contexts/LocaleContext';
+import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 
-function getNextSaturdayAt15Stockholm(now = new Date()) {
+function getNextSaturdayStockholm(now = new Date(), hour: number) {
   const stockholmTz = 'Europe/Stockholm';
   const day = now.getUTCDay();
-  // Calculate days until next Saturday (6). If today is Saturday and past 15:00 local, go to next week
+  // Calculate days until next Saturday (6). If today is Saturday and past release time, go to next week
   const daysUntilSaturday = (6 - day + 7) % 7;
   const candidate = new Date(now);
   candidate.setUTCDate(now.getUTCDate() + daysUntilSaturday);
-  // Set to 15:00 Stockholm in UTC by formatting a local date string
+  // Set to specified hour Stockholm time
   const dateStr = formatInTimeZone(candidate, stockholmTz, 'yyyy-MM-dd');
-  const targetLocal = new Date(`${dateStr}T15:00:00`);
-  // targetLocal is interpreted in local TZ; rebuild via timezone formatting to UTC timestamp
+  const targetLocal = new Date(`${dateStr}T${hour.toString().padStart(2, '0')}:00:00`);
   const targetIso = formatInTimeZone(targetLocal, stockholmTz, "yyyy-MM-dd'T'HH:mm:ssXXX");
   return new Date(targetIso);
 }
 
 export function YouTubeSchedule() {
   const t = useTranslations('site');
+  const locale = useLocale();
   const [now, setNow] = useState(() => new Date());
-  const target = useMemo(() => getNextSaturdayAt15Stockholm(now), [now]);
+  
+  // Swedish channel: 09:00, English channel: 15:00
+  const releaseHour = locale === 'sv' ? 9 : 15;
+  const target = useMemo(() => getNextSaturdayStockholm(now, releaseHour), [now, releaseHour]);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
