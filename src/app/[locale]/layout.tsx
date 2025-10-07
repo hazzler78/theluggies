@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: 'Colorful fun for neurodivergent kids'
 };
 
+// Cloudflare Pages (next-on-pages) requires Edge runtime for dynamic routes
+export const runtime = 'edge';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin']

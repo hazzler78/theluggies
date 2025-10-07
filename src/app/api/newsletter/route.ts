@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import {z} from 'zod';
 
 const Body = z.object({email: z.string().email()});
