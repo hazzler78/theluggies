@@ -1,3 +1,8 @@
 name = "theluggies"
 compatibility_date = "2024-09-01"
 compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "newsletter"
+database_id = "9430f4f4-a3d5-4a9a-9b76-e25acbd5807c"

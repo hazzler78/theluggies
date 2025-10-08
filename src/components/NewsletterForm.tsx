@@ -1,9 +1,10 @@
 "use client";
 import {useState} from 'react';
-import {useTranslations} from '@/contexts/LocaleContext';
+import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 
 export function NewsletterForm() {
   const t = useTranslations('site');
+  const locale = useLocale();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle'|'loading'|'success'|'error'>('idle');
 
@@ -14,7 +15,7 @@ export function NewsletterForm() {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email})
+        body: JSON.stringify({email, locale})
       });
       if (!res.ok) throw new Error('Request failed');
       setStatus('success');
