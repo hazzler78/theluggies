@@ -1,7 +1,6 @@
 export const runtime = 'edge';
 
 import {z} from 'zod';
-import {Resend} from 'resend';
 
 const Body = z.object({
   email: z.string().email(),
@@ -54,10 +53,8 @@ export async function POST(request: Request) {
       .bind(email, locale, token)
       .run();
 
-    // Send welcome email via Resend
+    // Send welcome email via Resend API directly (no SDK needed for Edge runtime)
     if (env.RESEND_API_KEY) {
-      const resend = new Resend(env.RESEND_API_KEY);
-      
       const confirmUrl = `${new URL(request.url).origin}/${locale}/confirm?token=${token}`;
       
       const subject = locale === 'sv' 
@@ -82,11 +79,19 @@ export async function POST(request: Request) {
           <p>Best regards,<br/>The Luggies Team 🎨</p>
         `;
 
-      await resend.emails.send({
-        from: 'The Luggies <onboarding@resend.dev>', // TODO: Replace with your verified domain
-        to: email,
-        subject,
-        html
+      // Call Resend API directly
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'The Luggies <onboarding@resend.dev>',
+          to: email,
+          subject,
+          html
+        })
       });
     }
 
