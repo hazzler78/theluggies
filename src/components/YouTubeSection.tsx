@@ -6,7 +6,7 @@ interface YouTubeVideo {
   id: string;
   title: string;
   publishedAt: string;
-  thumbnail: string;
+  thumbnail: string | undefined;
 }
 
 export function YouTubeSection() {
