@@ -98,7 +98,7 @@ export async function POST(request: Request) {
           </div>
         `;
 
-      await fetch('https://api.resend.com/emails', {
+      const emailResponse = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${(env as CloudflareEnv).RESEND_API_KEY}`,
@@ -111,6 +111,14 @@ export async function POST(request: Request) {
           html
         })
       });
+
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text();
+        console.error('Resend API error:', emailResponse.status, errorText);
+      } else {
+        const emailData = await emailResponse.json();
+        console.log('Email sent successfully:', emailData.id);
+      }
     }
 
     return new Response(JSON.stringify({ok: true}), {
