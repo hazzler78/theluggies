@@ -22,8 +22,9 @@ export async function POST(request: Request) {
     }
 
     // Do not leak whether an email exists; attempt unsubscribe idempotently
+    // Delete the record entirely to completely remove the subscription
     await env.DB
-      .prepare("UPDATE newsletter_subscribers SET confirmed = 0, updated_at = datetime('now') WHERE email = ?")
+      .prepare("DELETE FROM newsletter_subscribers WHERE email = ?")
       .bind(email)
       .run();
 
