@@ -21,27 +21,15 @@ export async function POST(request: Request) {
       return new Response('Email is required', { status: 400 });
     }
 
-    // Check if email exists and is subscribed
-    const existingUser = await env.DB.prepare(
-      'SELECT * FROM newsletter_subscribers WHERE email = ?'
-    ).bind(email).first();
-
-    if (!existingUser) {
-      return new Response('Email not found', { status: 404 });
-    }
-
-    if (!existingUser.confirmed) {
-      return new Response('Email not confirmed', { status: 400 });
-    }
-
-    // Mark as unsubscribed
-    await env.DB.prepare(
-      'UPDATE newsletter_subscribers SET confirmed = 0 WHERE email = ?'
-    ).bind(email).run();
+    // Do not leak whether an email exists; attempt unsubscribe idempotently
+    await env.DB
+      .prepare("UPDATE newsletter_subscribers SET confirmed = 0, updated_at = datetime('now') WHERE email = ?")
+      .bind(email)
+      .run();
 
     return new Response(JSON.stringify({ 
       success: true, 
-      message: 'Successfully unsubscribed' 
+      message: 'If this email was subscribed, it has been unsubscribed.' 
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -159,7 +147,7 @@ export async function GET(request: Request) {
                 });
                 
                 if (response.ok) {
-                  result.innerHTML = '<p class="success">✓ Successfully unsubscribed!</p>';
+                  result.innerHTML = '<p class="success">✓ You have been unsubscribed.</p>';
                   button.style.display = 'none';
                 } else {
                   const error = await response.text();
