@@ -1,6 +1,6 @@
 ﻿export const runtime = 'edge';
 
-import { getRequestContext } from '@cloudflare/next-on-pages/next-dev';
+import {getRequestContext} from '@cloudflare/next-on-pages';
 
 interface CloudflareEnv {
   DB: D1Database;
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       return new Response('Database not available', { status: 500 });
     }
 
-    const { email } = await request.json();
+    const { email } = await request.json() as { email: string };
 
     if (!email) {
       return new Response('Email is required', { status: 400 });
