@@ -9,7 +9,7 @@ const Body = z.object({
 
 // Type for D1 binding from Cloudflare
 interface Env {
-  DB: D1Database;
+  DB: any; // Cloudflare D1 Database
   RESEND_API_KEY: string;
 }
 

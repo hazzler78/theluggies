@@ -8,7 +8,7 @@ const Body = z.object({
 });
 
 interface Env {
-  DB: D1Database;
+  DB: any; // Cloudflare D1 Database
 }
 
 export async function POST(request: Request) {
