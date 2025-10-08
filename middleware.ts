@@ -6,6 +6,11 @@ const defaultLocale = 'en';
 export function middleware(request: NextRequest) {
   const {pathname} = request.nextUrl;
 
+  // Skip middleware for API routes
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+
   // Check if pathname starts with a locale
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
@@ -19,7 +24,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next|.*\\..*).*)']
+  matcher: ['/((?!_next|.*\\..*).*)', '/api/:path*']
 };
 
 
