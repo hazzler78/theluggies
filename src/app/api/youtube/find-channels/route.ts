@@ -43,7 +43,17 @@ export async function GET(request: NextRequest) {
       throw new Error(`YouTube API error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as {
+      items: Array<{
+        id: string;
+        snippet: {
+          title: string;
+          customUrl?: string;
+          thumbnails: { default?: { url: string } };
+          description: string;
+        };
+      }>;
+    };
     
     if (data.items && data.items.length > 0) {
       const channel = data.items[0];
@@ -53,7 +63,7 @@ export async function GET(request: NextRequest) {
         handle: channel.snippet.customUrl || handle,
         thumbnail: channel.snippet.thumbnails.default?.url,
         description: channel.snippet.description,
-        allResults: data.items.map((item: { id: string; snippet: { title: string; customUrl?: string } }) => ({
+        allResults: data.items.map((item) => ({
           channelId: item.id,
           title: item.snippet.title,
           handle: item.snippet.customUrl

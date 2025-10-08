@@ -46,9 +46,18 @@ export async function GET(request: NextRequest) {
       throw new Error(`YouTube API error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as {
+      items: Array<{
+        id: { videoId: string };
+        snippet: {
+          title: string;
+          publishedAt: string;
+          thumbnails: { medium?: { url: string }; default?: { url: string } };
+        };
+      }>;
+    };
     
-    const videos: YouTubeVideo[] = data.items.map((item: { id: { videoId: string }; snippet: { title: string; publishedAt: string; thumbnails: { medium?: { url: string }; default?: { url: string } } } }) => ({
+    const videos: YouTubeVideo[] = data.items.map((item) => ({
       id: item.id.videoId,
       title: item.snippet.title,
       publishedAt: item.snippet.publishedAt,
