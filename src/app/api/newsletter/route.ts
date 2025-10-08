@@ -116,7 +116,7 @@ export async function POST(request: Request) {
         const errorText = await emailResponse.text();
         console.error('Resend API error:', emailResponse.status, errorText);
       } else {
-        const emailData = await emailResponse.json();
+        const emailData = await emailResponse.json() as { id: string };
         console.log('Email sent successfully:', emailData.id);
       }
     }
