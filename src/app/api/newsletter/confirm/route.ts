@@ -7,9 +7,13 @@ const Body = z.object({
   name: z.string().min(1)
 });
 
-interface Env {
-  DB: any; // Cloudflare D1 Database
+declare global {
+  interface CloudflareEnv {
+    DB: D1Database;
+  }
 }
+
+type Env = CloudflareEnv;
 
 export async function POST(request: Request) {
   try {

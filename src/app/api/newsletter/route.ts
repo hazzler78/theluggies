@@ -7,11 +7,15 @@ const Body = z.object({
   locale: z.enum(['en', 'sv'])
 });
 
-// Type for D1 binding from Cloudflare
-interface Env {
-  DB: any; // Cloudflare D1 Database
-  RESEND_API_KEY: string;
+// Cloudflare bindings available in Edge runtime
+declare global {
+  interface CloudflareEnv {
+    DB: D1Database;
+    RESEND_API_KEY: string;
+  }
 }
+
+type Env = CloudflareEnv;
 
 export async function POST(request: Request) {
   try {
