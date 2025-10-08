@@ -7,20 +7,13 @@ const Body = z.object({
   name: z.string().min(1)
 });
 
-declare global {
-  interface CloudflareEnv {
-    DB: D1Database;
-  }
-}
-
-type Env = CloudflareEnv;
-
-export async function POST(request: Request, context: {env: Env}) {
+export async function POST(request: Request) {
   try {
     const data = await request.json();
     const {token, name} = Body.parse(data);
 
-    const db = context.env.DB;
+    const env = (globalThis as unknown as {DB: D1Database});
+    const db = env.DB;
 
     if (!db) {
       return new Response(JSON.stringify({ok: false, error: 'Database not configured'}), {

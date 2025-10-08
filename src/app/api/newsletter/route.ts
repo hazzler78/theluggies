@@ -7,23 +7,20 @@ const Body = z.object({
   locale: z.enum(['en', 'sv'])
 });
 
-// Cloudflare bindings available in Edge runtime
-declare global {
-  interface CloudflareEnv {
-    DB: D1Database;
-    RESEND_API_KEY: string;
-  }
+// Cloudflare bindings available via globalThis in Edge runtime
+interface CloudflareEnv {
+  DB: D1Database;
+  RESEND_API_KEY: string;
 }
 
-type Env = CloudflareEnv;
-
-export async function POST(request: Request, context: {env: Env}) {
+export async function POST(request: Request) {
   try {
     const data = await request.json();
     const {email, locale} = Body.parse(data);
 
-    // Get D1 database from Cloudflare context
-    const db = context.env.DB;
+    // Get D1 database from Cloudflare globalThis
+    const env = (globalThis as unknown as {DB: D1Database; RESEND_API_KEY: string});
+    const db = env.DB;
 
     if (!db) {
       console.error('D1 database not available');
@@ -57,7 +54,7 @@ export async function POST(request: Request, context: {env: Env}) {
       .run();
 
     // Send welcome email via Resend API directly (no SDK needed for Edge runtime)
-    if (context.env.RESEND_API_KEY) {
+    if (env.RESEND_API_KEY) {
       const confirmUrl = `${new URL(request.url).origin}/${locale}/confirm?token=${token}`;
       
       const subject = locale === 'sv' 
@@ -86,7 +83,7 @@ export async function POST(request: Request, context: {env: Env}) {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${context.env.RESEND_API_KEY}`,
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
