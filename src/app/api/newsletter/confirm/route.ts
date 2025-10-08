@@ -15,13 +15,12 @@ declare global {
 
 type Env = CloudflareEnv;
 
-export async function POST(request: Request) {
+export async function POST(request: Request, context: {env: Env}) {
   try {
     const data = await request.json();
     const {token, name} = Body.parse(data);
 
-    const env = process.env as unknown as Env;
-    const db = env.DB;
+    const db = context.env.DB;
 
     if (!db) {
       return new Response(JSON.stringify({ok: false, error: 'Database not configured'}), {
