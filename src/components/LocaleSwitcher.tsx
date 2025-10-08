@@ -1,19 +1,31 @@
 "use client";
 import {useLocale} from '@/contexts/LocaleContext';
 
+const DOMAIN_MAP = {
+  en: 'https://theluggies.com',
+  sv: 'https://luggisarna.se'
+};
+
 export function LocaleSwitcher() {
   const locale = useLocale();
 
   function switchTo(next: 'en' | 'sv') {
     if (next === locale) return;
+    
+    // Get current path without locale
     const currentPath = window.location.pathname;
     const parts = currentPath.split('/').filter(Boolean);
+    
+    // Remove current locale from path if it exists
     if (parts[0] === 'en' || parts[0] === 'sv') {
-      parts[0] = next;
-    } else {
-      parts.unshift(next);
+      parts.shift();
     }
-    window.location.href = '/' + parts.join('/');
+    
+    // Build the path for the new locale
+    const newPath = parts.length > 0 ? '/' + parts.join('/') : '';
+    
+    // Redirect to the appropriate domain with the new locale
+    window.location.href = `${DOMAIN_MAP[next]}/${next}${newPath}`;
   }
 
   return (
