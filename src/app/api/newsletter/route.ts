@@ -19,12 +19,14 @@ export async function POST(request: Request) {
     const {email, locale} = Body.parse(data);
 
     // Get D1 database from Cloudflare globalThis
-    const env = (globalThis as unknown as {DB: D1Database; RESEND_API_KEY: string});
+    const env = (globalThis as unknown as {DB?: D1Database; RESEND_API_KEY?: string});
     const db = env.DB;
 
+    console.log('Newsletter API called', {email, locale, hasDB: !!db, hasKey: !!env.RESEND_API_KEY});
+
     if (!db) {
-      console.error('D1 database not available');
-      return new Response(JSON.stringify({ok: false, error: 'Database not configured'}), {
+      console.error('D1 database not available - check Cloudflare Pages D1 binding is set to variable name "DB"');
+      return new Response(JSON.stringify({ok: false, error: 'Database not configured. Please contact support.'}), {
         status: 500,
         headers: {'Content-Type': 'application/json'}
       });
