@@ -1,19 +1,24 @@
 export const runtime = 'edge';
 
 import {z} from 'zod';
+import {getRequestContext} from '@cloudflare/next-on-pages';
 
 const Body = z.object({
   token: z.string(),
   name: z.string().min(1)
 });
 
+interface CloudflareEnv {
+  DB: D1Database;
+}
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();
     const {token, name} = Body.parse(data);
 
-    const env = (globalThis as unknown as {DB: D1Database});
-    const db = env.DB;
+    const {env} = getRequestContext<{env: CloudflareEnv}>();
+    const db = (env as CloudflareEnv).DB;
 
     if (!db) {
       return new Response(JSON.stringify({ok: false, error: 'Database not configured'}), {
@@ -51,10 +56,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Confirm error:', error);
-    return new Response(JSON.stringify({ok: false}), {
+    return new Response(JSON.stringify({ok: false, error: String(error)}), {
       status: 400,
       headers: {'Content-Type': 'application/json'}
     });
   }
 }
-

@@ -1,13 +1,13 @@
 export const runtime = 'edge';
 
 import {z} from 'zod';
+import {getRequestContext} from '@cloudflare/next-on-pages';
 
 const Body = z.object({
   email: z.string().email(),
   locale: z.enum(['en', 'sv'])
 });
 
-// Cloudflare bindings available via globalThis in Edge runtime
 interface CloudflareEnv {
   DB: D1Database;
   RESEND_API_KEY: string;
@@ -18,15 +18,15 @@ export async function POST(request: Request) {
     const data = await request.json();
     const {email, locale} = Body.parse(data);
 
-    // Get D1 database from Cloudflare globalThis
-    const env = (globalThis as unknown as {DB?: D1Database; RESEND_API_KEY?: string});
-    const db = env.DB;
+    // Get D1 database from Cloudflare context
+    const {env} = getRequestContext<{env: CloudflareEnv}>();
+    const db = (env as CloudflareEnv).DB;
 
-    console.log('Newsletter API called', {email, locale, hasDB: !!db, hasKey: !!env.RESEND_API_KEY});
+    console.log('Newsletter API called', {email, locale, hasDB: !!db, hasKey: !!(env as CloudflareEnv).RESEND_API_KEY});
 
     if (!db) {
-      console.error('D1 database not available - check Cloudflare Pages D1 binding is set to variable name "DB"');
-      return new Response(JSON.stringify({ok: false, error: 'Database not configured. Please contact support.'}), {
+      console.error('D1 database not available');
+      return new Response(JSON.stringify({ok: false, error: 'Database not configured'}), {
         status: 500,
         headers: {'Content-Type': 'application/json'}
       });
@@ -55,8 +55,8 @@ export async function POST(request: Request) {
       .bind(email, locale, token)
       .run();
 
-    // Send welcome email via Resend API directly (no SDK needed for Edge runtime)
-    if (env.RESEND_API_KEY) {
+    // Send welcome email via Resend API directly
+    if ((env as CloudflareEnv).RESEND_API_KEY) {
       const confirmUrl = `${new URL(request.url).origin}/${locale}/confirm?token=${token}`;
       
       const subject = locale === 'sv' 
@@ -81,11 +81,10 @@ export async function POST(request: Request) {
           <p>Best regards,<br/>The Luggies Team 🎨</p>
         `;
 
-      // Call Resend API directly
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+          'Authorization': `Bearer ${(env as CloudflareEnv).RESEND_API_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -103,7 +102,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Newsletter error:', error);
-    return new Response(JSON.stringify({ok: false}), {
+    return new Response(JSON.stringify({ok: false, error: String(error)}), {
       status: 400,
       headers: {'Content-Type': 'application/json'}
     });
