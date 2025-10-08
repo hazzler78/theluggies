@@ -22,8 +22,8 @@ export function YouTubeSection() {
       ]
     : [
         // English channel
+        { id: 'rnYes3TyW20', title: 'Episode 2' },
         { id: 'pHyEtPYPw_0', title: 'Episode 1' },
-        { id: null, title: 'Coming soon' },
         { id: null, title: 'Coming soon' },
       ];
 
