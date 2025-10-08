@@ -1,9 +1,20 @@
 "use client";
 import {useLocale, useTranslations} from '@/contexts/LocaleContext';
+import {useEffect, useState} from 'react';
+
+interface YouTubeVideo {
+  id: string;
+  title: string;
+  publishedAt: string;
+  thumbnail: string;
+}
 
 export function YouTubeSection() {
   const locale = useLocale();
   const t = useTranslations('site');
+  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   // Channel URLs based on language
   const channelUrl = locale === 'sv' 
@@ -12,20 +23,43 @@ export function YouTubeSection() {
   
   const channelHandle = locale === 'sv' ? '@Luggisarna' : '@TheLuggies';
   
-  // Video IDs - add new video IDs here as they're released
-  const videos = locale === 'sv' 
-    ? [
-        // Swedish channel - add video IDs here when released
-        { id: null, title: 'Kommer snart' },
-        { id: null, title: 'Kommer snart' },
-        { id: null, title: 'Kommer snart' },
-      ]
-    : [
-        // English channel
-        { id: 'rnYes3TyW20', title: 'Episode 2' },
-        { id: 'pHyEtPYPw_0', title: 'Episode 1' },
-        { id: null, title: 'Coming soon' },
-      ];
+  // Fetch videos from YouTube API
+  useEffect(() => {
+    async function fetchVideos() {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/youtube/videos?locale=${locale}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch videos');
+        }
+        
+        const data = await response.json() as YouTubeVideo[];
+        setVideos(data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching YouTube videos:', err);
+        setError('Failed to load videos');
+        // Fallback to static videos if API fails
+        setVideos(locale === 'sv' 
+          ? [
+              { id: '', title: 'Kommer snart', publishedAt: '', thumbnail: '' },
+              { id: '', title: 'Kommer snart', publishedAt: '', thumbnail: '' },
+              { id: '', title: 'Kommer snart', publishedAt: '', thumbnail: '' },
+            ]
+          : [
+              { id: 'rnYes3TyW20', title: 'Episode 2', publishedAt: '', thumbnail: '' },
+              { id: 'pHyEtPYPw_0', title: 'Episode 1', publishedAt: '', thumbnail: '' },
+              { id: '', title: 'Coming soon', publishedAt: '', thumbnail: '' },
+            ]
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchVideos();
+  }, [locale]);
 
   return (
     <div className="w-full">
@@ -33,10 +67,23 @@ export function YouTubeSection() {
         🎬 {t('latestVideos')}
       </h2>
       
+      {loading && (
+        <div className="text-center py-8">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+          <p className="mt-2 opacity-60">Loading videos...</p>
+        </div>
+      )}
+      
+      {error && (
+        <div className="text-center py-4 text-red-600 dark:text-red-400">
+          <p>⚠️ {error}</p>
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {videos.map((video, idx) => (
           <div 
-            key={idx}
+            key={video.id || idx}
             className="rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-800"
           >
             {video.id ? (
@@ -52,7 +99,12 @@ export function YouTubeSection() {
                   />
                 </div>
                 <div className="p-4">
-                  <p className="font-semibold text-sm opacity-80">{video.title}</p>
+                  <p className="font-semibold text-sm opacity-80 line-clamp-2">{video.title}</p>
+                  {video.publishedAt && (
+                    <p className="text-xs opacity-60 mt-1">
+                      {new Date(video.publishedAt).toLocaleDateString(locale === 'sv' ? 'sv-SE' : 'en-US')}
+                    </p>
+                  )}
                 </div>
               </>
             ) : (
