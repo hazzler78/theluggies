@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
         handle: channel.snippet.customUrl || handle,
         thumbnail: channel.snippet.thumbnails.default?.url,
         description: channel.snippet.description,
-        allResults: data.items.map((item: any) => ({
+        allResults: data.items.map((item: { id: string; snippet: { title: string; customUrl?: string } }) => ({
           channelId: item.id,
           title: item.snippet.title,
           handle: item.snippet.customUrl

@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
     
-    const videos: YouTubeVideo[] = data.items.map((item: any) => ({
+    const videos: YouTubeVideo[] = data.items.map((item: { id: { videoId: string }; snippet: { title: string; publishedAt: string; thumbnails: { medium?: { url: string }; default?: { url: string } } } }) => ({
       id: item.id.videoId,
       title: item.snippet.title,
       publishedAt: item.snippet.publishedAt,
