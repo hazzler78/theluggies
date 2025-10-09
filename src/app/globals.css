@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Mobile game touch lock - prevent scrolling/zooming during gameplay */
+.game-container {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+.play-page-body {
+  touch-action: none;
+  overscroll-behavior: none;
+  overflow: hidden;
+}

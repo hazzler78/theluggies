@@ -5,6 +5,11 @@ import {useEffect, useRef, useState} from 'react';
 
 function useLenis() {
   useEffect(() => {
+    // Skip Lenis on play page - we don't want smooth scrolling in-game!
+    if (typeof window !== 'undefined' && window.location.pathname.includes('/play')) {
+      return;
+    }
+    
     const lenis = new Lenis({
       smoothWheel: true,
       lerp: 0.1
@@ -19,6 +24,36 @@ function useLenis() {
       lenis?.destroy?.();
     };
   }, []);
+}
+
+// Mobile touch lock hook - prevents scrolling, zooming, and overscroll bounce
+function useMobileTouchLock(enabled = true) {
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') return;
+
+    const preventDefault = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+
+    // Non-passive listeners for full control over touch events
+    document.body.addEventListener('touchstart', preventDefault, { passive: false });
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+    document.body.addEventListener('touchend', preventDefault, { passive: false });
+
+    // Lock body styles
+    const originalTouchAction = document.body.style.touchAction;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.touchAction = 'none';
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      document.body.removeEventListener('touchstart', preventDefault);
+      document.body.removeEventListener('touchmove', preventDefault);
+      document.body.removeEventListener('touchend', preventDefault);
+      document.body.style.touchAction = originalTouchAction;
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [enabled]);
 }
 
 interface CharacterPosition {
@@ -259,6 +294,10 @@ function Character({
 }
 
 export function ParallaxCharacters() {
+  // Dev mode toggle: set to true to allow scrolling/zooming for debugging
+  const DEV_MODE = false;
+  
+  useMobileTouchLock(!DEV_MODE);
   useLenis();
   const ref = useRef<HTMLDivElement | null>(null);
   const [positions, setPositions] = useState<CharacterPosition[]>([
@@ -276,7 +315,7 @@ export function ParallaxCharacters() {
   };
 
   return (
-    <section ref={ref} className="w-full max-w-5xl h-[70vh] relative overflow-hidden">
+    <section ref={ref} className="game-container w-full max-w-5xl h-[70vh] relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center select-none">
         <Character 
           color="bg-yellow-300" 
