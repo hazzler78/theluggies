@@ -16,13 +16,13 @@
 ## 🔄 Att göra / To Do
 
 ### Omedelbart / Immediate
-- [ ] Sätt miljövariabel: `NEXT_PUBLIC_BASE_URL=https://theluggies.com`
-- [ ] Registrera på [Google Search Console](https://search.google.com/search-console)
+- [x] Sätt miljövariabel: `NEXT_PUBLIC_BASE_URL=https://theluggies.com`
+- [x] Registrera på [Google Search Console](https://search.google.com/search-console)
 - [ ] Registrera på [Bing Webmaster Tools](https://www.bing.com/webmasters)
 - [ ] Skicka in sitemap: `https://theluggies.com/sitemap.xml`
 
 ### Inom en vecka / Within a Week
-- [ ] Skapa optimerad OG-bild (1200x630px) som `public/og-image.jpg`
+- [x] Skapa optimerad OG-bild (1200x630px) som `public/og-image.jpg`
 - [ ] Lägg till Google Search Console verification code
 - [ ] Lägg till Google Analytics eller Plausible
 - [ ] Verifiera att alla bilder har alt-text
