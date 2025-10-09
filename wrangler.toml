@@ -5,8 +5,21 @@ compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
 # Environment Variables (set in Cloudflare Dashboard):
 # - RESEND_API_KEY: API key for sending emails via Resend
 # - NEWSLETTER_API_KEY: Secret key for authenticating newsletter send requests
+# - YOUTUBE_API_KEY: YouTube Data API v3 key
+# - YOUTUBE_CHANNEL_ID_SV: Swedish YouTube channel ID
+# - YOUTUBE_CHANNEL_ID_EN: English YouTube channel ID
+# - CRON_SECRET: Optional secret for cron endpoint authentication
 
 [[d1_databases]]
 binding = "DB"
 database_name = "newsletter"
 database_id = "9430f4f4-a3d5-4a9a-9b76-e25acbd5807c"
+
+# Cron triggers for automatic newsletter sending
+# Runs at 09:05 and 15:05 Stockholm time (UTC+1/+2)
+# Checks for new YouTube videos and sends newsletters automatically
+[triggers]
+crons = [
+  "5 8 * * 6",   # 09:05 Stockholm time (08:05 UTC in winter, 07:05 UTC in summer - adjust for DST)
+  "5 14 * * 6"   # 15:05 Stockholm time (14:05 UTC in winter, 13:05 UTC in summer - adjust for DST)
+]

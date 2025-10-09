@@ -8,7 +8,16 @@ When you release a new YouTube video, you can send a beautiful, personalized new
 
 ## 📋 Quick Start
 
-### 1️⃣ One-Time Setup
+You have **two options**:
+
+### Option A: 🤖 Fully Automated (Recommended)
+Set it up once, then newsletters send automatically when you publish videos!
+
+👉 **[See NEWSLETTER_AUTOMATION.md for setup](./NEWSLETTER_AUTOMATION.md)**
+
+### Option B: 📧 Manual Sending
+
+#### 1️⃣ One-Time Setup
 
 Add this environment variable in your Cloudflare Workers dashboard:
 
@@ -26,7 +35,7 @@ Or on Windows PowerShell:
 [Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
 ```
 
-### 2️⃣ Every New Video Release
+#### 2️⃣ Every New Video Release
 
 #### Option A: Use the PowerShell Script (Easiest!)
 
@@ -61,9 +70,10 @@ Invoke-RestMethod -Uri "https://theluggies.com/api/newsletter/send" `
 
 ## 📄 Documentation Files
 
+- **[NEWSLETTER_AUTOMATION.md](./NEWSLETTER_AUTOMATION.md)** - 🤖 **Automated setup guide** (recommended!)
 - **[NEWSLETTER_QUICKSTART.md](./NEWSLETTER_QUICKSTART.md)** - Quick reference guide
 - **[NEWSLETTER_USAGE.md](./NEWSLETTER_USAGE.md)** - Complete documentation with all details
-- **[send-newsletter.ps1](./send-newsletter.ps1)** - PowerShell script for easy sending
+- **[send-newsletter.ps1](./send-newsletter.ps1)** - PowerShell script for manual sending
 
 ## ✨ Features
 
@@ -154,14 +164,20 @@ The API endpoint is automatically deployed with your Next.js app on Cloudflare P
 
 Location: `/api/newsletter/send`
 
-## 🔄 Future Enhancements
+## 🔄 Automation Features
+
+- ✅ **Automatic detection of new YouTube videos** (see [NEWSLETTER_AUTOMATION.md](./NEWSLETTER_AUTOMATION.md))
+- ✅ **Scheduled cron triggers** (09:05 & 15:05 every Saturday)
+- ✅ **Duplicate prevention** (tracks sent videos in database)
+- ✅ **Uses YouTube metadata** (title, description)
+
+## 🔮 Future Enhancements
 
 Potential improvements:
-- [ ] Automatic detection of new YouTube videos
-- [ ] Scheduling newsletters for optimal send times
 - [ ] A/B testing different email templates
 - [ ] Analytics dashboard for open/click rates
 - [ ] Admin UI for manual newsletter composition
+- [ ] Custom scheduling per video
 
 ## 📝 API Endpoint
 
