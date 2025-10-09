@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import Script from 'next/script';
 import {LocaleProvider} from '@/contexts/LocaleContext';
 import en from '@/i18n/messages/en.json';
 import sv from '@/i18n/messages/sv.json';
@@ -191,6 +192,20 @@ export default async function LocaleLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3QJL2D8CW9"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3QJL2D8CW9');
+          `}
+        </Script>
+        
         <LocaleProvider locale={locale} messages={messages}>
           {children}
         </LocaleProvider>
