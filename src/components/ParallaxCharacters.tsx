@@ -27,11 +27,29 @@ function useLenis() {
 }
 
 // Mobile touch lock hook - prevents scrolling, zooming, and overscroll bounce
+// but allows interactive elements (buttons, links) to work
 function useMobileTouchLock(enabled = true) {
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
 
     const preventDefault = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      
+      // Allow touches on interactive elements (buttons, links, inputs)
+      if (
+        target.tagName === 'A' ||
+        target.tagName === 'BUTTON' ||
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT' ||
+        target.closest('a') ||
+        target.closest('button') ||
+        target.closest('nav')
+      ) {
+        return; // Don't prevent default, let the element work normally
+      }
+      
+      // Prevent default for everything else (the game area)
       e.preventDefault();
     };
 
