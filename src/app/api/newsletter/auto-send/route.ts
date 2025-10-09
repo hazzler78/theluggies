@@ -19,6 +19,19 @@ interface YouTubeVideo {
   publishedAt: string;
 }
 
+interface YouTubeSearchResponse {
+  items?: Array<{
+    id: {
+      videoId: string;
+    };
+    snippet: {
+      title: string;
+      description: string;
+      publishedAt: string;
+    };
+  }>;
+}
+
 async function getLatestVideo(channelId: string, apiKey: string): Promise<YouTubeVideo | null> {
   try {
     const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=1&type=video`;
@@ -29,7 +42,7 @@ async function getLatestVideo(channelId: string, apiKey: string): Promise<YouTub
       return null;
     }
 
-    const data = await response.json() as any;
+    const data = await response.json() as YouTubeSearchResponse;
     if (!data.items || data.items.length === 0) {
       return null;
     }
