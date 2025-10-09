@@ -15,9 +15,23 @@ export function middleware(request: NextRequest) {
   const {pathname} = request.nextUrl;
   const hostname = request.headers.get('host') || '';
 
-  // Skip middleware for API routes
-  if (pathname.startsWith('/api/')) {
+  // Skip middleware for API routes, static files, and Next.js internals
+  if (pathname.startsWith('/api/') || 
+      pathname.startsWith('/_next/') || 
+      pathname.startsWith('/favicon') ||
+      pathname.includes('.')) {
     return NextResponse.next();
+  }
+
+  // Clean hostname (remove port)
+  const cleanHostname = hostname.split(':')[0];
+
+  // Handle www redirects first - always redirect www to non-www
+  if (cleanHostname.startsWith('www.')) {
+    const nonWwwHost = cleanHostname.replace('www.', '');
+    const redirectUrl = new URL(request.url);
+    redirectUrl.hostname = nonWwwHost;
+    return NextResponse.redirect(redirectUrl, 301); // Permanent redirect
   }
 
   // Check if pathname starts with a locale
@@ -28,29 +42,27 @@ export function middleware(request: NextRequest) {
   if (pathnameHasLocale) {
     // Check if user is on wrong domain for the locale
     const currentLocale = pathname.split('/')[1] as 'en' | 'sv';
-    const expectedLocale = DOMAIN_LOCALE_MAP[hostname.split(':')[0] as keyof typeof DOMAIN_LOCALE_MAP] || 'en';
+    const expectedLocale = DOMAIN_LOCALE_MAP[cleanHostname as keyof typeof DOMAIN_LOCALE_MAP] || 'en';
     
     // If locale doesn't match domain, redirect to correct domain
-    if (currentLocale !== expectedLocale) {
+    if (currentLocale !== expectedLocale && !cleanHostname.includes('localhost')) {
       const targetDomain = currentLocale === 'en' 
         ? 'https://theluggies.com' 
         : 'https://luggisarna.se';
       
-      // Skip redirect for localhost (development)
-      if (!hostname.includes('localhost')) {
-        return NextResponse.redirect(`${targetDomain}${pathname}`);
-      }
+      return NextResponse.redirect(`${targetDomain}${pathname}`, 301);
     }
     
     return NextResponse.next();
   }
 
   // Determine default locale based on domain
-  const defaultLocale = DOMAIN_LOCALE_MAP[hostname.split(':')[0] as keyof typeof DOMAIN_LOCALE_MAP] || 'en';
+  const defaultLocale = DOMAIN_LOCALE_MAP[cleanHostname as keyof typeof DOMAIN_LOCALE_MAP] || 'en';
 
-  // Redirect to appropriate locale
-  request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
-  return NextResponse.redirect(request.nextUrl);
+  // Redirect to appropriate locale with clean URL
+  const redirectUrl = new URL(request.url);
+  redirectUrl.pathname = `/${defaultLocale}${pathname === '/' ? '' : pathname}`;
+  return NextResponse.redirect(redirectUrl, 301); // Permanent redirect
 }
 
 export const config = {
