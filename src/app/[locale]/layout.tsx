@@ -55,7 +55,7 @@ export async function generateMetadata({
       siteName: 'The Luggies',
       images: [
         {
-          url: `${baseUrl}/luggisarna/blue-happy.png`,
+          url: `${baseUrl}/og-image.jpg`,
           width: 1200,
           height: 630,
           alt: 'The Luggies - Colorful musical characters',
@@ -66,7 +66,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
-      images: [`${baseUrl}/luggisarna/blue-happy.png`],
+      images: [`${baseUrl}/og-image.jpg`],
     },
     robots: {
       index: true,
@@ -171,7 +171,7 @@ export default async function LocaleLayout({
         description: locale === 'sv'
           ? 'Nya musikavsnitt varje lördag kl 09:00 svensk tid'
           : 'New musical episodes every Saturday at 15:00 Stockholm time',
-        thumbnailUrl: `${baseUrl}/luggisarna/blue-happy.png`,
+        thumbnailUrl: `${baseUrl}/og-image.jpg`,
         uploadDate: new Date().toISOString(),
         contentUrl: locale === 'sv' 
           ? 'https://youtube.com/@Luggisarna'
