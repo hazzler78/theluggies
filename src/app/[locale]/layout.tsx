@@ -56,9 +56,11 @@ export async function generateMetadata({
       images: [
         {
           url: `${baseUrl}/og-image.jpg`,
+          secureUrl: `${baseUrl}/og-image.jpg`,
           width: 1200,
           height: 630,
           alt: 'The Luggies - Colorful musical characters',
+          type: 'image/jpeg',
         },
       ],
     },
