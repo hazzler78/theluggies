@@ -6,10 +6,29 @@ import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 function getNextSaturdayStockholm(now = new Date(), hour: number) {
   const stockholmTz = 'Europe/Stockholm';
   const day = now.getUTCDay();
-  // Calculate days until next Saturday (6). If today is Saturday and past release time, go to next week
-  const daysUntilSaturday = (6 - day + 7) % 7;
+  
+  // Calculate days until next Saturday (6)
+  let daysUntilSaturday = (6 - day + 7) % 7;
+  
+  // If today is Saturday, check if we're past the release time
+  if (day === 6) {
+    const currentStockholmTime = formatInTimeZone(now, stockholmTz, 'HH:mm');
+    const currentHour = parseInt(currentStockholmTime.split(':')[0]);
+    const currentMinute = parseInt(currentStockholmTime.split(':')[1]);
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const releaseTimeInMinutes = hour * 60;
+    
+    // If we're past the release time today, go to next Saturday
+    if (currentTimeInMinutes >= releaseTimeInMinutes) {
+      daysUntilSaturday = 7; // Next week's Saturday
+    } else {
+      daysUntilSaturday = 0; // Today's release
+    }
+  }
+  
   const candidate = new Date(now);
   candidate.setUTCDate(now.getUTCDate() + daysUntilSaturday);
+  
   // Set to specified hour Stockholm time
   const dateStr = formatInTimeZone(candidate, stockholmTz, 'yyyy-MM-dd');
   const targetLocal = new Date(`${dateStr}T${hour.toString().padStart(2, '0')}:00:00`);

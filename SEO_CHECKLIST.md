@@ -23,8 +23,8 @@
 
 ### Inom en vecka / Within a Week
 - [x] Skapa optimerad OG-bild (1200x630px) som `public/og-image.jpg`
-- [ ] Lägg till Google Search Console verification code
-- [ ] Lägg till Google Analytics eller Plausible
+- [x] Lägg till Google Search Console verification code
+- [x] Lägg till Google Analytics eller Plausible
 - [ ] Verifiera att alla bilder har alt-text
 
 ### Inom en månad / Within a Month
