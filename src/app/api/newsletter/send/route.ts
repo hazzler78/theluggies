@@ -244,6 +244,17 @@ export async function POST(request: Request) {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
 
+    // Record in database to prevent duplicate sends
+    try {
+      await db.prepare(
+        'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
+      ).bind(youtubeId, titleSv, titleEn, successCount, errorCount).run();
+      console.log('Recorded newsletter send in database:', youtubeId);
+    } catch (dbError) {
+      // Log error but don't fail the request since emails were already sent
+      console.error('Failed to record in database:', dbError);
+    }
+
     return new Response(JSON.stringify({
       ok: true,
       sent: successCount,
