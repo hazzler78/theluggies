@@ -136,9 +136,15 @@ Each newsletter includes:
 
 ## 🔐 Security
 
-- **CRON_SECRET**: Optional but recommended. Add `?secret=your-secret` to URL
+- **CRON_SECRET**: Optional but recommended for manual testing. The system automatically recognizes Cloudflare Cron triggers via the `CF-Cron` header, so the secret is only required for manual API calls
 - **NEWSLETTER_API_KEY**: Required for sending emails
 - **API Keys**: Never exposed in client-side code
+
+### How Authorization Works
+
+The system accepts requests in two ways:
+1. **Cloudflare Cron Triggers** (automatic): Recognized by the `CF-Cron` header - no secret needed
+2. **Manual API calls**: Require `?secret=your-cron-secret` parameter
 
 ## 🐛 Troubleshooting
 

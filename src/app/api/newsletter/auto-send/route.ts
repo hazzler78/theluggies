@@ -75,16 +75,21 @@ export async function GET(request: Request) {
 
     console.log('Auto-send cron triggered');
 
-    // Verify cron secret (optional but recommended)
+    // Verify authorization
     const url = new URL(request.url);
     const cronSecret = url.searchParams.get('secret');
-    
-    if (cfEnv.CRON_SECRET && cronSecret !== cfEnv.CRON_SECRET) {
+    const isCronTrigger = request.headers.get('CF-Cron') !== null;
+
+    // Allow if it's a Cloudflare Cron trigger, OR if correct secret is provided
+    if (!isCronTrigger && cfEnv.CRON_SECRET && cronSecret !== cfEnv.CRON_SECRET) {
+      console.log('Unauthorized access attempt - not a cron trigger and no valid secret');
       return new Response(JSON.stringify({ok: false, error: 'Unauthorized'}), {
         status: 401,
         headers: {'Content-Type': 'application/json'}
       });
     }
+
+    console.log('Authorization passed -', isCronTrigger ? 'Cron trigger detected' : 'Valid secret provided');
 
     if (!db) {
       return new Response(JSON.stringify({ok: false, error: 'Database not configured'}), {

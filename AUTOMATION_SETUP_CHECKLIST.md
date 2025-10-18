@@ -54,13 +54,15 @@ npx wrangler d1 execute newsletter --remote --file=./migrations/0002_create_news
 
 ### 4. (Optional) Generate Cron Secret
 
-For extra security:
+For extra security when manually testing:
 
 ```powershell
 -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | ForEach-Object {[char]$_})
 ```
 
 **Save it:** `CRON_SECRET=your-random-secret`
+
+**Note:** Cloudflare Cron triggers work automatically without a secret (they're authenticated via the `CF-Cron` header). The secret is only needed for manual API testing.
 
 ---
 
