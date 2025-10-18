@@ -94,10 +94,11 @@ export async function POST(request: Request) {
 
       const html = `
         <!DOCTYPE html>
-        <html>
+        <html lang="${isSv ? 'sv' : 'en'}">
           <head>
-            <meta charset="utf-8">
+            <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <title>${title}</title>
           </head>
           <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
@@ -216,13 +217,16 @@ export async function POST(request: Request) {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${cfEnv.RESEND_API_KEY}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json; charset=utf-8'
           },
           body: JSON.stringify({
             from: 'The Luggies <hello@theluggies.com>',
             to: subscriber.email,
             subject,
-            html
+            html,
+            headers: {
+              'Content-Type': 'text/html; charset=UTF-8'
+            }
           })
         });
 

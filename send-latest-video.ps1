@@ -112,14 +112,14 @@ $body = @{
     descriptionSv = $description
     descriptionEn = $description
     apiKey = $newsletterApiKey
-} | ConvertTo-Json
+} | ConvertTo-Json -Depth 10
 
 try {
     # Send newsletter
     $response = Invoke-RestMethod -Uri $ApiUrl `
         -Method Post `
-        -ContentType "application/json" `
-        -Body $body `
+        -ContentType "application/json; charset=utf-8" `
+        -Body ([System.Text.Encoding]::UTF8.GetBytes($body)) `
         -ErrorAction Stop
     
     # Display results
