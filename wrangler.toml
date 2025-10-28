@@ -15,11 +15,5 @@ binding = "DB"
 database_name = "newsletter"
 database_id = "9430f4f4-a3d5-4a9a-9b76-e25acbd5807c"
 
-# Cron triggers for automatic newsletter sending
-# Runs at 09:05 and 15:05 Stockholm time (UTC+1/+2)
-# Checks for new YouTube videos and sends newsletters automatically
-[triggers]
-crons = [
-  "5 8 * * 6",   # 09:05 Stockholm time (08:05 UTC in winter, 07:05 UTC in summer - adjust for DST)
-  "5 14 * * 6"   # 15:05 Stockholm time (14:05 UTC in winter, 13:05 UTC in summer - adjust for DST)
-]
+# Note: Cron triggers are handled by a separate Worker (newsletter-cron-worker)
+# This Pages project only handles the API endpoints

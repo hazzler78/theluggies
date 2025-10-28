@@ -1,0 +1,17 @@
+name = "theluggies-newsletter-cron"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment Variables (set in Cloudflare Dashboard):
+# - PAGES_URL: The URL of your Pages project (e.g., https://theluggies.com)
+# - CRON_SECRET: Secret for authenticating with the Pages API
+
+# Cron triggers for automatic newsletter sending
+# Runs at 09:05 and 15:05 Stockholm time (UTC+1/+2)
+# Checks for new YouTube videos and sends newsletters automatically
+[triggers]
+crons = [
+  "5 8 * * 6",   # 09:05 Stockholm time (08:05 UTC in winter, 07:05 UTC in summer - adjust for DST)
+  "5 14 * * 6"   # 15:05 Stockholm time (14:05 UTC in winter, 13:05 UTC in summer - adjust for DST)
+]
