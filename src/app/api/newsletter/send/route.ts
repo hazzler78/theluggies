@@ -58,13 +58,14 @@ export async function POST(request: Request) {
       });
     }
 
-    // Fetch all confirmed subscribers
+    // Fetch all subscribers (both confirmed and unconfirmed)
+    // Unconfirmed subscribers are those who signed up but haven't filled in their name yet
     const subscribers = await db.prepare(
-      'SELECT email, name, locale FROM newsletter_subscribers WHERE confirmed = 1'
+      'SELECT email, name, locale FROM newsletter_subscribers'
     ).all();
 
     if (!subscribers.results || subscribers.results.length === 0) {
-      return new Response(JSON.stringify({ok: true, sent: 0, message: 'No confirmed subscribers'}), {
+      return new Response(JSON.stringify({ok: true, sent: 0, message: 'No subscribers'}), {
         status: 200,
         headers: {'Content-Type': 'application/json'}
       });
