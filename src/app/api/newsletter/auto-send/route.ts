@@ -166,9 +166,51 @@ export async function GET(request: Request) {
           results.push({locale: 'sv', video: videoSv, sent: false, error: 'Already sent'});
           console.log('Swedish newsletter already sent for this video');
         }
+      } else if (videoSv) {
+        // Catch-up: if latest video exists but is older than window, still send if not recorded
+        const existing = await db.prepare('SELECT id FROM newsletter_sent WHERE youtube_id = ?')
+          .bind(videoSv.id)
+          .first();
+
+        if (!existing) {
+          try {
+            const sendResponse = await fetch(`${url.origin}/api/newsletter/send`, {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                youtubeId: videoSv.id,
+                titleSv: videoSv.title,
+                titleEn: videoSv.title,
+                descriptionSv: videoSv.description,
+                descriptionEn: videoSv.description,
+                apiKey: cfEnv.NEWSLETTER_API_KEY
+              })
+            });
+
+            if (sendResponse.ok) {
+              const sendResult = await sendResponse.json() as {sent: number; failed: number};
+              await db.prepare(
+                'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
+              ).bind(videoSv.id, videoSv.title, videoSv.title, sendResult.sent, sendResult.failed).run();
+
+              results.push({locale: 'sv', video: videoSv, sent: true});
+              console.log('Swedish newsletter sent (catch-up)');
+            } else {
+              const error = await sendResponse.text();
+              results.push({locale: 'sv', video: videoSv, sent: false, error});
+              console.error('Failed to send Swedish newsletter (catch-up):', error);
+            }
+          } catch (error) {
+            results.push({locale: 'sv', video: videoSv, sent: false, error: String(error)});
+            console.error('Error sending Swedish newsletter (catch-up):', error);
+          }
+        } else {
+          results.push({locale: 'sv', video: videoSv, sent: false, error: 'Already sent'});
+          console.log('Swedish newsletter already sent for this video (catch-up)');
+        }
       } else {
-        results.push({locale: 'sv', video: videoSv, sent: false, error: 'No recent video'});
-        console.log('No recent Swedish video found');
+        results.push({locale: 'sv', video: videoSv, sent: false, error: 'No video found'});
+        console.log('No Swedish video found');
       }
     }
 
@@ -224,9 +266,51 @@ export async function GET(request: Request) {
           results.push({locale: 'en', video: videoEn, sent: false, error: 'Already sent'});
           console.log('English newsletter already sent for this video');
         }
+      } else if (videoEn) {
+        // Catch-up: if latest video exists but is older than window, still send if not recorded
+        const existing = await db.prepare('SELECT id FROM newsletter_sent WHERE youtube_id = ?')
+          .bind(videoEn.id)
+          .first();
+
+        if (!existing) {
+          try {
+            const sendResponse = await fetch(`${url.origin}/api/newsletter/send`, {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                youtubeId: videoEn.id,
+                titleSv: videoEn.title,
+                titleEn: videoEn.title,
+                descriptionSv: videoEn.description,
+                descriptionEn: videoEn.description,
+                apiKey: cfEnv.NEWSLETTER_API_KEY
+              })
+            });
+
+            if (sendResponse.ok) {
+              const sendResult = await sendResponse.json() as {sent: number; failed: number};
+              await db.prepare(
+                'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
+              ).bind(videoEn.id, videoEn.title, videoEn.title, sendResult.sent, sendResult.failed).run();
+
+              results.push({locale: 'en', video: videoEn, sent: true});
+              console.log('English newsletter sent (catch-up)');
+            } else {
+              const error = await sendResponse.text();
+              results.push({locale: 'en', video: videoEn, sent: false, error});
+              console.error('Failed to send English newsletter (catch-up):', error);
+            }
+          } catch (error) {
+            results.push({locale: 'en', video: videoEn, sent: false, error: String(error)});
+            console.error('Error sending English newsletter (catch-up):', error);
+          }
+        } else {
+          results.push({locale: 'en', video: videoEn, sent: false, error: 'Already sent'});
+          console.log('English newsletter already sent for this video (catch-up)');
+        }
       } else {
-        results.push({locale: 'en', video: videoEn, sent: false, error: 'No recent video'});
-        console.log('No recent English video found');
+        results.push({locale: 'en', video: videoEn, sent: false, error: 'No video found'});
+        console.log('No English video found');
       }
     }
 
