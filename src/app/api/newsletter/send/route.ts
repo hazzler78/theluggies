@@ -78,7 +78,8 @@ export async function POST(request: Request) {
     // Send emails to all subscribers
     for (const sub of subscribers.results) {
       const subscriber = sub as unknown as Subscriber;
-      const isSv = subscriber.locale === 'sv';
+      const normalizedLocale = (subscriber.locale || '').toLowerCase();
+      const isSv = normalizedLocale === 'sv';
       const title = isSv ? titleSv : titleEn;
       const description = isSv ? descriptionSv : descriptionEn;
       const greeting = subscriber.name 
