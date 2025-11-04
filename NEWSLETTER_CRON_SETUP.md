@@ -9,7 +9,7 @@ Cloudflare Pages doesn't support cron triggers directly. The original `wrangler.
 ## Solution
 
 We've created a separate Cloudflare Worker (`newsletter-cron-worker`) that:
-1. Runs on a cron schedule (every Saturday at 09:05 and 15:05 Stockholm time)
+1. Runs on a cron schedule (every day at 09:05 and 15:05 Stockholm time, with 10-min backup checks)
 2. Calls the Pages project's `/api/newsletter/auto-send` endpoint
 3. Handles the YouTube video checking and newsletter sending
 
@@ -56,9 +56,9 @@ CRON_SECRET=your-random-secret-here
 
 ## How It Works
 
-1. **Cron Schedule**: Worker runs every Saturday at:
-   - 09:05 Stockholm time (checks for Swedish videos)
-   - 15:05 Stockholm time (checks for English videos)
+1. **Cron Schedule**: Worker runs every day at:
+   - 09:05 and 09:10 Stockholm time (checks Swedish release)
+   - 15:05 and 15:10 Stockholm time (checks English release)
 
 2. **API Call**: Worker calls `https://theluggies.com/api/newsletter/auto-send?secret=your-secret`
 
@@ -99,8 +99,8 @@ npx wrangler d1 execute newsletter --remote --command "SELECT * FROM newsletter_
 3. Check Pages logs for errors
 
 ### No newsletters sent
-1. Check if there are confirmed subscribers: `SELECT COUNT(*) FROM newsletter_subscribers WHERE confirmed = 1`
-2. Check if videos were published within the 30-minute window
+1. Check total subscribers: `SELECT COUNT(*) FROM newsletter_subscribers`
+2. Check if videos were published within the 90-minute window
 3. Check if videos were already sent: `SELECT * FROM newsletter_sent`
 
 ## Benefits

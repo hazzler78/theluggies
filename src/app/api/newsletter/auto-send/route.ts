@@ -60,7 +60,7 @@ async function getLatestVideo(channelId: string, apiKey: string): Promise<YouTub
   }
 }
 
-function isRecentlyPublished(publishedAt: string, minutesAgo: number = 30): boolean {
+function isRecentlyPublished(publishedAt: string, minutesAgo: number = 90): boolean {
   const publishedTime = new Date(publishedAt);
   const now = new Date();
   const diffMinutes = (now.getTime() - publishedTime.getTime()) / 1000 / 60;
