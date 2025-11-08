@@ -1,5 +1,5 @@
-export default {
-  async scheduled(event, env, ctx) {
+const cronWorker = {
+  async scheduled(event, env) {
     console.log('Newsletter cron triggered at:', new Date().toISOString());
     
     try {
@@ -35,3 +35,5 @@ export default {
     }
   }
 };
+
+export default cronWorker;

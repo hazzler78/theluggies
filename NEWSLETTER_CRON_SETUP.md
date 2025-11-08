@@ -9,7 +9,7 @@ Cloudflare Pages doesn't support cron triggers directly. The original `wrangler.
 ## Solution
 
 We've created a separate Cloudflare Worker (`newsletter-cron-worker`) that:
-1. Runs on a cron schedule (every day at 09:05 and 15:05 Stockholm time, with 10-min backup checks)
+1. Runs on a cron schedule (every day at 09:30 and 15:05 Stockholm time, with 5-min backup checks)
 2. Calls the Pages project's `/api/newsletter/auto-send` endpoint
 3. Handles the YouTube video checking and newsletter sending
 
@@ -57,7 +57,7 @@ CRON_SECRET=your-random-secret-here
 ## How It Works
 
 1. **Cron Schedule**: Worker runs every day at:
-   - 09:05 and 09:10 Stockholm time (checks Swedish release)
+   - 09:30 and 09:35 Stockholm time (checks Swedish release)
    - 15:05 and 15:10 Stockholm time (checks English release)
 
 2. **API Call**: Worker calls `https://theluggies.com/api/newsletter/auto-send?secret=your-secret`

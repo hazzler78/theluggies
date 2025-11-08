@@ -112,7 +112,13 @@ export async function GET(request: Request) {
       });
     }
 
-    const results: Array<{locale: string; video: YouTubeVideo | null; sent: boolean; error?: string}> = [];
+    const results: Array<{
+      locale: string;
+      video: YouTubeVideo | null;
+      sent: boolean;
+      error?: string;
+      stats?: {sent: number; failed: number};
+    }> = [];
 
     // Check Swedish channel (09:00 release)
     if (cfEnv.YOUTUBE_CHANNEL_ID_SV) {
@@ -145,14 +151,8 @@ export async function GET(request: Request) {
 
             if (sendResponse.ok) {
               const sendResult = await sendResponse.json() as {sent: number; failed: number};
-              
-              // Record in database
-              await db.prepare(
-                'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
-              ).bind(videoSv.id, videoSv.title, videoSv.title, sendResult.sent, sendResult.failed).run();
-
-              results.push({locale: 'sv', video: videoSv, sent: true});
-              console.log('Swedish newsletter sent successfully');
+              results.push({locale: 'sv', video: videoSv, sent: true, stats: sendResult});
+              console.log('Swedish newsletter sent successfully', sendResult);
             } else {
               const error = await sendResponse.text();
               results.push({locale: 'sv', video: videoSv, sent: false, error});
@@ -189,12 +189,8 @@ export async function GET(request: Request) {
 
             if (sendResponse.ok) {
               const sendResult = await sendResponse.json() as {sent: number; failed: number};
-              await db.prepare(
-                'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
-              ).bind(videoSv.id, videoSv.title, videoSv.title, sendResult.sent, sendResult.failed).run();
-
-              results.push({locale: 'sv', video: videoSv, sent: true});
-              console.log('Swedish newsletter sent (catch-up)');
+              results.push({locale: 'sv', video: videoSv, sent: true, stats: sendResult});
+              console.log('Swedish newsletter sent (catch-up)', sendResult);
             } else {
               const error = await sendResponse.text();
               results.push({locale: 'sv', video: videoSv, sent: false, error});
@@ -245,14 +241,8 @@ export async function GET(request: Request) {
 
             if (sendResponse.ok) {
               const sendResult = await sendResponse.json() as {sent: number; failed: number};
-              
-              // Record in database
-              await db.prepare(
-                'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
-              ).bind(videoEn.id, videoEn.title, videoEn.title, sendResult.sent, sendResult.failed).run();
-
-              results.push({locale: 'en', video: videoEn, sent: true});
-              console.log('English newsletter sent successfully');
+              results.push({locale: 'en', video: videoEn, sent: true, stats: sendResult});
+              console.log('English newsletter sent successfully', sendResult);
             } else {
               const error = await sendResponse.text();
               results.push({locale: 'en', video: videoEn, sent: false, error});
@@ -289,12 +279,8 @@ export async function GET(request: Request) {
 
             if (sendResponse.ok) {
               const sendResult = await sendResponse.json() as {sent: number; failed: number};
-              await db.prepare(
-                'INSERT INTO newsletter_sent (youtube_id, title_sv, title_en, recipients_count, failed_count) VALUES (?, ?, ?, ?, ?)'
-              ).bind(videoEn.id, videoEn.title, videoEn.title, sendResult.sent, sendResult.failed).run();
-
-              results.push({locale: 'en', video: videoEn, sent: true});
-              console.log('English newsletter sent (catch-up)');
+              results.push({locale: 'en', video: videoEn, sent: true, stats: sendResult});
+              console.log('English newsletter sent (catch-up)', sendResult);
             } else {
               const error = await sendResponse.text();
               results.push({locale: 'en', video: videoEn, sent: false, error});

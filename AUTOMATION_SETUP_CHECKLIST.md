@@ -100,7 +100,7 @@ Wait for Cloudflare to deploy (2-3 minutes).
 1. Go to Cloudflare Dashboard
 2. Workers & Pages → theluggies → Triggers
 3. You should see:
-   - `5 8 * * 6` (Saturdays at 09:05 Stockholm time)
+   - `30 8 * * 6` (Saturdays at 09:30 Stockholm time)
    - `5 14 * * 6` (Saturdays at 15:05 Stockholm time)
 
 ---
@@ -126,7 +126,7 @@ Expected response:
 ## ✅ Done!
 
 Now when you:
-1. **Publish a video at 09:00** → Newsletter sent at 09:05 ✅
+1. **Publish a video at 09:00** → Newsletter sent at 09:30 ✅
 2. **Publish a video at 15:00** → Newsletter sent at 15:05 ✅
 
 ## Monitoring

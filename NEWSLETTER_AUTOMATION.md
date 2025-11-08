@@ -5,7 +5,7 @@ Automatically send newsletters when you publish new YouTube videos!
 ## How It Works
 
 1. **You publish video** on YouTube at 09:00 (Swedish) or 15:00 (English)
-2. **Cloudflare Cron runs** at 09:05 and 15:05 every Saturday
+2. **Cloudflare Cron runs** at 09:30 and 15:05 every Saturday
 3. **System checks YouTube** for videos published in last 30 minutes
 4. **Newsletter sent automatically** to all confirmed subscribers
 5. **Video tracked** in database to prevent duplicate sends
@@ -70,11 +70,11 @@ Cloudflare will automatically deploy the changes including the cron triggers.
 
 The system runs twice every Saturday:
 
-- **09:05 Stockholm time** (checks for Swedish videos)
+- **09:30 Stockholm time** (checks for Swedish videos)
 - **15:05 Stockholm time** (checks for English videos)
 
 **Note:** Cron times are in UTC, so they're configured as:
-- `5 8 * * 6` = 08:05 UTC (09:05 CET) in winter
+- `30 8 * * 6` = 08:30 UTC (09:30 CET) in winter
 - `5 14 * * 6` = 14:05 UTC (15:05 CET) in winter
 
 ⚠️ **Daylight Saving Time**: You may need to adjust these times when DST changes.
@@ -165,8 +165,8 @@ The system accepts requests in two ways:
 
 3. **Check video timing**
    - Video must be published within last 30 minutes
-   - Cron runs at 09:05 and 15:05
-   - If you publish at 09:00, it will be caught at 09:05 ✅
+   - Cron runs at 09:30 and 15:05
+   - If you publish at 09:00, it will be caught at 09:30 ✅
 
 4. **Check database**
    ```bash
@@ -207,7 +207,7 @@ if (videoSv && isRecentlyPublished(videoSv.publishedAt, 60)) { // 60 minutes
 Edit `wrangler.toml`:
 ```toml
 crons = [
-  "5 8 * * 6",   # Every Saturday at 08:05 UTC
+  "30 8 * * 6",  # Every Saturday at 08:30 UTC
   "5 14 * * 6"   # Every Saturday at 14:05 UTC
 ]
 ```
@@ -219,8 +219,8 @@ Cron format: `minute hour day-of-month month day-of-week`
 Add more cron times:
 ```toml
 crons = [
-  "5 8 * * 6",   # 09:05
-  "10 8 * * 6",  # 09:10 (backup check)
+  "30 8 * * 6",  # 09:30
+  "35 8 * * 6",  # 09:35 (backup check)
   "5 14 * * 6",  # 15:05
   "10 14 * * 6"  # 15:10 (backup check)
 ]

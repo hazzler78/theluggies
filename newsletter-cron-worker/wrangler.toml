@@ -8,12 +8,12 @@ compatibility_flags = ["nodejs_compat"]
 # - CRON_SECRET: Secret for authenticating with the Pages API
 
 # Cron triggers for automatic newsletter sending
-# Runs every day at 09:05 and 15:05 Stockholm time (with 10-min backup checks)
+# Runs every day at 09:30 and 15:05 Stockholm time (with 5-min backup checks)
 # Checks for new YouTube videos and sends newsletters automatically
 [triggers]
 crons = [
-  "5 8 * * *",    # Daily 09:05 Stockholm time (08:05 UTC in winter)
-  "10 8 * * *",   # Daily 09:10 backup
+  "30 8 * * *",   # Daily 09:30 Stockholm time (08:30 UTC in winter)
+  "35 8 * * *",   # Daily 09:35 backup check
   "5 14 * * *",   # Daily 15:05 Stockholm time (14:05 UTC in winter)
   "10 14 * * *"   # Daily 15:10 backup
 ]

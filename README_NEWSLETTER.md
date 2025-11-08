@@ -167,7 +167,7 @@ Location: `/api/newsletter/send`
 ## 🔄 Automation Features
 
 - ✅ **Automatic detection of new YouTube videos** (see [NEWSLETTER_AUTOMATION.md](./NEWSLETTER_AUTOMATION.md))
-- ✅ **Scheduled cron triggers** (09:05 & 15:05 every Saturday)
+- ✅ **Scheduled cron triggers** (09:30 & 15:05 every Saturday)
 - ✅ **Duplicate prevention** (tracks sent videos in database)
 - ✅ **Uses YouTube metadata** (title, description)
 
