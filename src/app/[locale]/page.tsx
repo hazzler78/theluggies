@@ -43,7 +43,7 @@ export default function Home() {
           
           <a
             href={`/${locale}/play`}
-            className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 transition-transform inline-block text-center"
+            className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 transition-transform inline-block text-center play-button-pulse"
             role="button"
             aria-label={locale === 'sv' ? 'Lek med Luggisarna - interaktivt spel' : 'Play with the Luggies - interactive game'}
           >
