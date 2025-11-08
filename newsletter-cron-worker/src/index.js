@@ -11,9 +11,16 @@ const cronWorker = {
         console.error('PAGES_URL environment variable not set');
         return;
       }
+
+      const requestUrl = new URL('/api/newsletter/auto-send', pagesUrl);
+      if (cronSecret) {
+        requestUrl.searchParams.set('secret', cronSecret);
+      } else {
+        console.warn('CRON_SECRET not set in cron worker environment; relying on public access');
+      }
       
       // Call the auto-send endpoint on the Pages project
-      const response = await fetch(`${pagesUrl}/api/newsletter/auto-send?secret=${cronSecret}`, {
+      const response = await fetch(requestUrl.toString(), {
         method: 'GET',
         headers: {
           'User-Agent': 'Cloudflare-Worker-Cron/1.0',

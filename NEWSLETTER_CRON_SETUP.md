@@ -34,7 +34,8 @@ PAGES_URL=https://theluggies.com
 CRON_SECRET=your-random-secret-here
 ```
 
-**Important:** Use the same `CRON_SECRET` value that you set in your Pages project environment variables.
+**Important:** Use the same `CRON_SECRET` value that you set in your Pages project environment variables.  
+If the worker runs without `CRON_SECRET`, it logs a warning and the request will be rejected if the Pages project still expects the secret.
 
 ### Step 3: Verify the Setup
 

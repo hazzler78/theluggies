@@ -153,7 +153,6 @@ The system accepts requests in two ways:
 1. **Check cron is running**
    - Cloudflare Dashboard → Workers → theluggies → Triggers
    - Should see cron triggers listed
-
 2. **Check environment variables**
    ```bash
    # All these must be set:
@@ -162,6 +161,7 @@ The system accepts requests in two ways:
    - NEWSLETTER_API_KEY
    - RESEND_API_KEY
    ```
+   - Verify `CRON_SECRET` matches between Pages and the cron worker
 
 3. **Check video timing**
    - Video must be published within last 30 minutes
