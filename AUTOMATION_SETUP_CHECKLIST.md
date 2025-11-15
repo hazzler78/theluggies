@@ -98,10 +98,10 @@ Wait for Cloudflare to deploy (2-3 minutes).
 ### 7. Verify Cron Triggers
 
 1. Go to Cloudflare Dashboard
-2. Workers & Pages → theluggies → Triggers
+2. Workers & Pages → theluggies-newsletter-cron → Triggers
 3. You should see:
-   - `30 8 * * 6` (Saturdays at 09:30 Stockholm time)
-   - `5 14 * * 6` (Saturdays at 15:05 Stockholm time)
+   - `30 8 * * *` (Daily at 09:30 Stockholm time)
+   - `5 14 * * *` (Daily at 15:05 Stockholm time)
 
 ---
 

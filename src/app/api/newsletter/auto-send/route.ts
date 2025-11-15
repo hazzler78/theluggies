@@ -60,10 +60,11 @@ async function getLatestVideo(channelId: string, apiKey: string): Promise<YouTub
   }
 }
 
-function isRecentlyPublished(publishedAt: string, minutesAgo: number = 90): boolean {
+function isRecentlyPublished(publishedAt: string, minutesAgo: number = 120): boolean {
   const publishedTime = new Date(publishedAt);
   const now = new Date();
   const diffMinutes = (now.getTime() - publishedTime.getTime()) / 1000 / 60;
+  console.log(`Video published ${diffMinutes.toFixed(1)} minutes ago (window: ${minutesAgo} minutes)`);
   return diffMinutes >= 0 && diffMinutes <= minutesAgo;
 }
 
@@ -120,10 +121,21 @@ export async function GET(request: Request) {
       stats?: {sent: number; failed: number};
     }> = [];
 
+    // Always check both channels if they exist - catch-up logic will handle videos outside time window
+    const now = new Date();
+    const currentHour = now.getUTCHours();
+    console.log(`Auto-send triggered at UTC hour: ${currentHour} (${now.toISOString()})`);
+
     // Check Swedish channel (09:00 release)
     if (cfEnv.YOUTUBE_CHANNEL_ID_SV) {
-      console.log('Checking Swedish channel...');
+      console.log('Checking Swedish channel...', cfEnv.YOUTUBE_CHANNEL_ID_SV);
       const videoSv = await getLatestVideo(cfEnv.YOUTUBE_CHANNEL_ID_SV, cfEnv.YOUTUBE_API_KEY);
+      
+      if (videoSv) {
+        console.log(`Found latest Swedish video: ${videoSv.id} - "${videoSv.title}" (published: ${videoSv.publishedAt})`);
+      } else {
+        console.log('No Swedish video found on channel');
+      }
       
       if (videoSv && isRecentlyPublished(videoSv.publishedAt)) {
         console.log('Found recent Swedish video:', videoSv.id, videoSv.title);
@@ -168,11 +180,13 @@ export async function GET(request: Request) {
         }
       } else if (videoSv) {
         // Catch-up: if latest video exists but is older than window, still send if not recorded
+        console.log('Swedish video found but outside time window, checking if already sent...');
         const existing = await db.prepare('SELECT id FROM newsletter_sent WHERE youtube_id = ?')
           .bind(videoSv.id)
           .first();
 
         if (!existing) {
+          console.log('Swedish video not yet sent, sending catch-up newsletter...');
           try {
             const sendResponse = await fetch(`${url.origin}/api/newsletter/send`, {
               method: 'POST',
@@ -212,8 +226,14 @@ export async function GET(request: Request) {
 
     // Check English channel (15:00 release)
     if (cfEnv.YOUTUBE_CHANNEL_ID_EN) {
-      console.log('Checking English channel...');
+      console.log('Checking English channel...', cfEnv.YOUTUBE_CHANNEL_ID_EN);
       const videoEn = await getLatestVideo(cfEnv.YOUTUBE_CHANNEL_ID_EN, cfEnv.YOUTUBE_API_KEY);
+      
+      if (videoEn) {
+        console.log(`Found latest English video: ${videoEn.id} - "${videoEn.title}" (published: ${videoEn.publishedAt})`);
+      } else {
+        console.log('No English video found on channel');
+      }
       
       if (videoEn && isRecentlyPublished(videoEn.publishedAt)) {
         console.log('Found recent English video:', videoEn.id, videoEn.title);
@@ -258,11 +278,13 @@ export async function GET(request: Request) {
         }
       } else if (videoEn) {
         // Catch-up: if latest video exists but is older than window, still send if not recorded
+        console.log('English video found but outside time window, checking if already sent...');
         const existing = await db.prepare('SELECT id FROM newsletter_sent WHERE youtube_id = ?')
           .bind(videoEn.id)
           .first();
 
         if (!existing) {
+          console.log('English video not yet sent, sending catch-up newsletter...');
           try {
             const sendResponse = await fetch(`${url.origin}/api/newsletter/send`, {
               method: 'POST',

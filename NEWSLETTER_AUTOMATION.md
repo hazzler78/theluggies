@@ -5,8 +5,8 @@ Automatically send newsletters when you publish new YouTube videos!
 ## How It Works
 
 1. **You publish video** on YouTube at 09:00 (Swedish) or 15:00 (English)
-2. **Cloudflare Cron runs** at 09:30 and 15:05 every Saturday
-3. **System checks YouTube** for videos published in last 30 minutes
+2. **Cloudflare Cron runs** at 09:30 and 15:05 every day
+3. **System checks YouTube** for videos published in last 120 minutes
 4. **Newsletter sent automatically** to all confirmed subscribers
 5. **Video tracked** in database to prevent duplicate sends
 
@@ -68,14 +68,14 @@ Cloudflare will automatically deploy the changes including the cron triggers.
 
 ## 📅 Cron Schedule
 
-The system runs twice every Saturday:
+The system runs twice every day:
 
 - **09:30 Stockholm time** (checks for Swedish videos)
 - **15:05 Stockholm time** (checks for English videos)
 
 **Note:** Cron times are in UTC, so they're configured as:
-- `30 8 * * 6` = 08:30 UTC (09:30 CET) in winter
-- `5 14 * * 6` = 14:05 UTC (15:05 CET) in winter
+- `30 8 * * *` = 08:30 UTC (09:30 CET) in winter - runs daily
+- `5 14 * * *` = 14:05 UTC (15:05 CET) in winter - runs daily
 
 ⚠️ **Daylight Saving Time**: You may need to adjust these times when DST changes.
 
@@ -83,10 +83,13 @@ The system runs twice every Saturday:
 
 The cron job:
 1. Fetches the latest video from your YouTube channel(s)
-2. Checks if it was published in the **last 30 minutes**
-3. Checks if we've already sent a newsletter for this video ID
-4. If new video found, sends newsletter to all confirmed subscribers
-5. Records the video ID in database to prevent duplicates
+2. Checks if it was published in the **last 120 minutes** (2 hours)
+3. If video is within time window, checks if we've already sent a newsletter for this video ID
+4. If video is outside time window but hasn't been sent yet, sends a "catch-up" newsletter
+5. If new video found, sends newsletter to all confirmed subscribers
+6. Records the video ID in database to prevent duplicates
+
+**Note:** The system uses a 120-minute window to catch videos that might be published slightly off-schedule. The catch-up logic ensures that even older videos that haven't been sent yet will still trigger a newsletter.
 
 ## ✅ Testing
 
@@ -204,11 +207,11 @@ if (videoSv && isRecentlyPublished(videoSv.publishedAt, 60)) { // 60 minutes
 
 ### Change Cron Schedule
 
-Edit `wrangler.toml`:
+Edit `newsletter-cron-worker/wrangler.toml`:
 ```toml
 crons = [
-  "30 8 * * 6",  # Every Saturday at 08:30 UTC
-  "5 14 * * 6"   # Every Saturday at 14:05 UTC
+  "30 8 * * *",  # Daily at 08:30 UTC (09:30 CET)
+  "5 14 * * *"   # Daily at 14:05 UTC (15:05 CET)
 ]
 ```
 
