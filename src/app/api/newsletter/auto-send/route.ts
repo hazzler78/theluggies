@@ -83,8 +83,17 @@ export async function GET(request: Request) {
 
     // Allow if it's a Cloudflare Cron trigger, OR if correct secret is provided
     if (!isCronTrigger && cfEnv.CRON_SECRET && cronSecret !== cfEnv.CRON_SECRET) {
-      console.log('Unauthorized access attempt - not a cron trigger and no valid secret');
-      return new Response(JSON.stringify({ok: false, error: 'Unauthorized'}), {
+      console.log('Unauthorized access attempt:', {
+        isCronTrigger: false,
+        hasCronSecretInEnv: !!cfEnv.CRON_SECRET,
+        secretProvided: !!cronSecret,
+        secretMatches: cronSecret === cfEnv.CRON_SECRET
+      });
+      return new Response(JSON.stringify({
+        ok: false, 
+        error: 'Unauthorized',
+        message: 'CRON_SECRET mismatch. Ensure the secret in the worker matches the secret in Pages environment variables.'
+      }), {
         status: 401,
         headers: {'Content-Type': 'application/json'}
       });
