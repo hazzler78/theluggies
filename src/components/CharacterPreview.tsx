@@ -2,6 +2,7 @@
 import {useTranslations} from '@/contexts/LocaleContext';
 import Image from 'next/image';
 import {useState, useEffect} from 'react';
+import {WaveIcon} from './icons';
 
 interface AnimatedCharacterProps {
   color: string;
@@ -137,8 +138,9 @@ export function CharacterPreview() {
       className="w-full max-w-5xl"
       aria-label={t('charactersAriaLabel')}
     >
-      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4">
-        {t('meetCharacters')}
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4 flex items-center justify-center gap-3">
+        <WaveIcon className="flex-shrink-0" size={32} />
+        <span>{t('meetCharacters')}</span>
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
         {characters.map((character, index) => (

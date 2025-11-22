@@ -9,6 +9,7 @@ import {AboutSection} from '../../components/AboutSection';
 import {HeroSection} from '../../components/HeroSection';
 import {FAQSection} from '../../components/FAQSection';
 import {StickyNewsletterCTA} from '../../components/StickyNewsletterCTA';
+import {PlayIcon} from '../../components/icons';
 
 export default function Home() {
   const t = useTranslations('site');
@@ -76,11 +77,12 @@ export default function Home() {
             </p>
             <a
               href={`/${locale}/play`}
-              className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 min-h-[56px] text-lg sm:text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 active:scale-95 transition-transform inline-flex items-center justify-center play-button-pulse focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 touch-manipulation"
+              className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 min-h-[56px] text-lg sm:text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 active:scale-95 transition-transform inline-flex items-center justify-center gap-2 play-button-pulse focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 touch-manipulation"
               role="button"
               aria-label={t('playAriaLabel')}
             >
-              <span aria-hidden="true">🎮</span> {t('playButton')}
+              <PlayIcon size={24} />
+              {t('playButton')}
             </a>
           </div>
         </section>

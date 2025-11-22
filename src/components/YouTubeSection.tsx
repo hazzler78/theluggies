@@ -2,6 +2,7 @@
 import {useLocale, useTranslations} from '@/contexts/LocaleContext';
 import {useEffect, useState} from 'react';
 import {VideoSkeleton} from './VideoSkeleton';
+import {YouTubeIcon, MovieCameraIcon} from './icons';
 
 interface YouTubeVideo {
   id: string;
@@ -64,8 +65,9 @@ export function YouTubeSection() {
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4">
-        🎬 {t('latestVideos')}
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4 flex items-center justify-center gap-3">
+        <MovieCameraIcon className="flex-shrink-0" size={32} />
+        <span>{t('latestVideos')}</span>
       </h2>
       
       {loading && (
@@ -79,7 +81,7 @@ export function YouTubeSection() {
       {error && !loading && videos.length === 0 && (
         <div className="text-center py-12">
           <div className="inline-flex flex-col items-center gap-4 px-6 py-6 rounded-2xl bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700 max-w-md">
-            <span className="text-4xl" aria-hidden="true">🎬</span>
+            <MovieCameraIcon size={48} className="opacity-30" />
             <div>
               <p className="font-semibold text-lg mb-2">Videos coming soon!</p>
               <p className="text-sm opacity-70 mb-4">
@@ -91,9 +93,7 @@ export function YouTubeSection() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-red-600 text-white px-6 py-3 min-h-[44px] font-semibold hover:bg-red-700 transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 touch-manipulation"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
+                <YouTubeIcon size={20} />
                 {t('watchYouTube')}
               </a>
             </div>
@@ -135,7 +135,7 @@ export function YouTubeSection() {
               // Coming soon placeholder
               <div className="relative pb-[56.25%] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4">
-                  <div className="text-4xl opacity-30">🎬</div>
+                  <MovieCameraIcon size={48} className="opacity-30" />
                   <p className="font-semibold text-sm opacity-60">{video.title}</p>
                 </div>
               </div>
@@ -153,9 +153,7 @@ export function YouTubeSection() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-red-600 text-white px-6 py-3 min-h-[44px] font-semibold hover:bg-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 touch-manipulation"
           >
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
+            <YouTubeIcon size={24} />
             {t('subscribeYouTube')} {channelHandle}
           </a>
         </div>

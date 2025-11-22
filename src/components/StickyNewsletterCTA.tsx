@@ -2,6 +2,7 @@
 import {useState, useEffect} from 'react';
 import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 import {NewsletterForm} from './NewsletterForm';
+import {CloseIcon} from './icons';
 
 const DISMISSED_KEY = 'luggies-newsletter-cta-dismissed';
 
@@ -101,7 +102,7 @@ export function StickyNewsletterCTA() {
             className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label="Close newsletter signup"
           >
-            <span className="text-lg" aria-hidden="true">×</span>
+            <CloseIcon size={18} />
           </button>
         </div>
         <NewsletterForm />

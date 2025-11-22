@@ -1,6 +1,7 @@
 "use client";
 import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 import {NewsletterForm} from './NewsletterForm';
+import {YouTubeIcon} from './icons';
 
 export function HeroSection() {
   const t = useTranslations('site');
@@ -28,9 +29,7 @@ export function HeroSection() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 min-h-[44px] text-sm sm:text-base font-semibold hover:bg-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 touch-manipulation whitespace-nowrap"
               >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
+                <YouTubeIcon className="flex-shrink-0" size={20} />
                 <span className="truncate">{t('heroCTA')}</span>
               </a>
             </div>
