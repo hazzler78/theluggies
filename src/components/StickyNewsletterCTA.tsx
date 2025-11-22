@@ -3,13 +3,30 @@ import {useState, useEffect} from 'react';
 import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 import {NewsletterForm} from './NewsletterForm';
 
+const DISMISSED_KEY = 'luggies-newsletter-cta-dismissed';
+
 export function StickyNewsletterCTA() {
   const t = useTranslations('site');
   const locale = useLocale();
   const [isVisible, setIsVisible] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    // Check if user has dismissed the CTA
+    if (typeof window !== 'undefined') {
+      const dismissed = localStorage.getItem(DISMISSED_KEY);
+      if (dismissed === 'true') {
+        setIsDismissed(true);
+        return;
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Don't show if dismissed
+    if (isDismissed) return;
+
     // Check for reduced motion preference
     if (typeof window === 'undefined') return;
     
@@ -28,7 +45,7 @@ export function StickyNewsletterCTA() {
 
     // Show CTA after user scrolls past 50% of viewport
     const handleScroll = () => {
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isDismissed) {
         setIsVisible(false);
         return;
       }
@@ -46,9 +63,17 @@ export function StickyNewsletterCTA() {
         mediaQuery.removeListener(handleChange);
       }
     };
-  }, []);
+  }, [isDismissed, prefersReducedMotion]);
 
-  if (!isVisible) return null;
+  const handleDismiss = () => {
+    setIsDismissed(true);
+    setIsVisible(false);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(DISMISSED_KEY, 'true');
+    }
+  };
+
+  if (isDismissed || !isVisible) return null;
 
   return (
     <div 
@@ -72,7 +97,7 @@ export function StickyNewsletterCTA() {
             </p>
           </div>
           <button
-            onClick={() => setIsVisible(false)}
+            onClick={handleDismiss}
             className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label="Close newsletter signup"
           >

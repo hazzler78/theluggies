@@ -91,11 +91,7 @@ html {
   overflow: hidden;
 }
 
-/* Prevent horizontal overflow on all elements */
-* {
-  max-width: 100%;
-}
-
+/* Prevent horizontal overflow on media elements */
 img, video, iframe {
   max-width: 100%;
   height: auto;

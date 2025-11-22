@@ -17,7 +17,7 @@ export function HeroSection() {
       <div className="bg-gradient-to-br from-yellow-50 via-blue-50 to-purple-50 dark:from-yellow-950/20 dark:via-blue-950/20 dark:to-purple-950/20 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 border border-yellow-200/50 dark:border-yellow-800/30">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-6 lg:gap-12">
           {/* Left side - Content */}
-          <div className="flex-1 text-center lg:text-left min-w-0">
+          <div className="flex-1 text-center lg:text-left min-w-0 max-w-full">
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-4 opacity-90 leading-relaxed">
               {t('heroValueProp')}
             </p>
@@ -37,7 +37,7 @@ export function HeroSection() {
           </div>
 
           {/* Right side - Newsletter */}
-          <div className="flex-1 w-full lg:max-w-md min-w-0">
+          <div className="flex-1 w-full lg:max-w-md min-w-0 max-w-full">
             <div className="bg-white/80 dark:bg-gray-900/80 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg sm:text-xl font-bold mb-2 text-center">
                 {t('newsletter')}
