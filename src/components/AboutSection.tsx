@@ -9,10 +9,10 @@ export function AboutSection() {
       className="w-full max-w-4xl"
       aria-label={t('aboutAriaLabel')}
     >
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4">
         {t('aboutTitle')}
       </h2>
-      <div className="bg-white/60 dark:bg-white/5 rounded-2xl p-6 md:p-8 border border-gray-200 dark:border-gray-800">
+      <div className="bg-white/60 dark:bg-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-800">
         <p className="text-base sm:text-lg mb-6 opacity-90 text-center">
           {t('aboutParagraph1')}
         </p>

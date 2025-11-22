@@ -52,7 +52,7 @@ export function StickyNewsletterCTA() {
 
   return (
     <div 
-      className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-sm z-50 transition-all duration-300 ease-out"
+      className="fixed bottom-4 left-2 right-2 sm:left-auto sm:right-4 sm:max-w-sm z-50 transition-all duration-300 ease-out"
       style={{
         transform: isVisible ? 'translateY(0)' : 'translateY(calc(100% + 1rem))',
         opacity: isVisible ? 1 : 0,
@@ -61,7 +61,7 @@ export function StickyNewsletterCTA() {
       role="complementary"
       aria-label={t('newsletterAriaLabel')}
     >
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border-2 border-yellow-300 dark:border-yellow-700 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-2xl border-2 border-yellow-300 dark:border-yellow-700 p-3 sm:p-4">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1">
             <h3 className="font-bold text-sm sm:text-base mb-1">

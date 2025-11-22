@@ -14,20 +14,20 @@ export default function Home() {
   const t = useTranslations('site');
   const locale = useLocale();
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 gap-8 sm:gap-10">
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 gap-8 sm:gap-10 overflow-x-hidden">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-foreground focus:text-background focus:rounded-lg focus:font-semibold focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
         {t('skipToContent')}
       </a>
-      <header className="w-full max-w-5xl flex items-center justify-between gap-4">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold flex-shrink-0">{t('titleFull')}</h1>
+      <header className="w-full max-w-5xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">{t('titleFull')}</h1>
         <LocaleSwitcher />
       </header>
 
-      <main id="main-content" className="w-full flex flex-col items-center gap-10">
-        <p className="text-xl sm:text-2xl lg:text-3xl opacity-95 font-semibold text-center px-4 max-w-4xl" role="doc-subtitle">{t('tagline')}</p>
+      <main id="main-content" className="w-full flex flex-col items-center gap-8 sm:gap-10">
+        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-95 font-semibold text-center px-4 max-w-4xl leading-snug" role="doc-subtitle">{t('tagline')}</p>
 
         {/* Hero Section with CTA */}
         <HeroSection />
@@ -65,7 +65,7 @@ export default function Home() {
           className="w-full max-w-md flex flex-col gap-4 items-center"
           aria-label={t('newsletterAriaLabel')}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center px-4">
             {t('newsletter')}
           </h2>
           <NewsletterForm />

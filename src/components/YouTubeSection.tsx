@@ -64,7 +64,7 @@ export function YouTubeSection() {
 
   return (
     <div className="w-full">
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4">
         🎬 {t('latestVideos')}
       </h2>
       
@@ -102,7 +102,7 @@ export function YouTubeSection() {
       )}
       
       {!loading && !error && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {videos.map((video, idx) => (
           <div 
             key={video.id || idx}

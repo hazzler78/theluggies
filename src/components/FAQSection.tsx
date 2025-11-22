@@ -54,7 +54,7 @@ export function FAQSection() {
       className="w-full max-w-4xl"
       aria-label={t('faqAriaLabel')}
     >
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center px-4">
         {t('faqTitle')}
       </h2>
       
@@ -71,11 +71,11 @@ export function FAQSection() {
           >
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 text-left flex items-start sm:items-center justify-between gap-3 sm:gap-4 hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
               aria-expanded={openIndex === index}
               aria-controls={`faq-answer-${index}`}
             >
-              <span className="font-semibold text-base sm:text-lg pr-4">
+              <span className="font-semibold text-sm sm:text-base md:text-lg pr-2 sm:pr-4 flex-1 text-left">
                 {faq.question}
               </span>
               <span 
@@ -92,7 +92,7 @@ export function FAQSection() {
                 openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
               }`}
             >
-              <div className="px-6 pb-4 text-sm sm:text-base opacity-90">
+              <div className="px-4 sm:px-6 pb-3 sm:pb-4 text-sm sm:text-base opacity-90">
                 {faq.answer}
               </div>
             </div>
