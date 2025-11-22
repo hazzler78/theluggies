@@ -9,8 +9,9 @@ const DOMAIN_LOCALE_MAP: Record<string, 'en' | 'sv'> = {
   'localhost': 'en'
 };
 
-export default function RootRedirect() {
-  const host = headers().get('host') ?? '';
+export default async function RootRedirect() {
+  const headersList = await headers();
+  const host = headersList.get('host') ?? '';
   const cleanHost = host.split(':')[0];
   const locale = DOMAIN_LOCALE_MAP[cleanHost] ?? 'en';
 
