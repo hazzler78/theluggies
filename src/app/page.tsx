@@ -1,6 +1,8 @@
 import {headers} from 'next/headers';
 import {redirect} from 'next/navigation';
 
+export const runtime = 'edge';
+
 const DOMAIN_LOCALE_MAP: Record<string, 'en' | 'sv'> = {
   'theluggies.com': 'en',
   'www.theluggies.com': 'en',
