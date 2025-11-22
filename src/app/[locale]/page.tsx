@@ -4,24 +4,38 @@ import {LocaleSwitcher} from '../../components/LocaleSwitcher';
 import {YouTubeSchedule} from '../../components/YouTubeSchedule';
 import {YouTubeSection} from '../../components/YouTubeSection';
 import {NewsletterForm} from '../../components/NewsletterForm';
+import {CharacterPreview} from '../../components/CharacterPreview';
+import {AboutSection} from '../../components/AboutSection';
 
 export default function Home() {
   const t = useTranslations('site');
   const locale = useLocale();
   return (
-    <div className="min-h-screen flex flex-col items-center p-6 gap-10">
-      <header className="w-full max-w-5xl flex items-center justify-between">
-        <h1 className="text-2xl sm:text-3xl font-bold">{t('title')}</h1>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-6 gap-8 sm:gap-10">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-foreground focus:text-background focus:rounded-lg focus:font-semibold focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        {t('skipToContent')}
+      </a>
+      <header className="w-full max-w-5xl flex items-center justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold flex-shrink-0">{t('title')}</h1>
         <LocaleSwitcher />
       </header>
 
-      <main className="w-full flex flex-col items-center gap-10">
-        <p className="text-lg opacity-80" role="doc-subtitle">{t('tagline')}</p>
+      <main id="main-content" className="w-full flex flex-col items-center gap-10">
+        <p className="text-lg sm:text-xl opacity-95 font-medium text-center px-4" role="doc-subtitle">{t('tagline')}</p>
+
+        {/* Character Preview Section */}
+        <CharacterPreview />
+
+        {/* About Section */}
+        <AboutSection />
 
         {/* YouTube Video Section */}
         <section 
           className="w-full max-w-5xl" 
-          aria-label={locale === 'sv' ? 'Senaste YouTube-videor' : 'Latest YouTube videos'}
+          aria-label={t('latestVideosAriaLabel')}
         >
           <YouTubeSection />
         </section>
@@ -29,37 +43,48 @@ export default function Home() {
         {/* Next Episode Countdown */}
         <section 
           className="w-full max-w-3xl"
-          aria-label={locale === 'sv' ? 'Nästa avsnitt' : 'Next episode'}
+          aria-label={t('nextEpisodeAriaLabel')}
         >
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center sr-only">
+            {t('nextEpisode')}
+          </h2>
           <YouTubeSchedule />
         </section>
 
         {/* Newsletter & Play Button */}
         <section 
           className="w-full max-w-md flex flex-col gap-4 items-center"
-          aria-label={locale === 'sv' ? 'Nyhetsbrev och interaktivt innehåll' : 'Newsletter and interactive content'}
+          aria-label={t('newsletterAriaLabel')}
         >
+          <h2 className="text-xl sm:text-2xl font-bold mb-2 text-center">
+            {t('newsletter')}
+          </h2>
           <NewsletterForm />
           
-          <a
-            href={`/${locale}/play`}
-            className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 transition-transform inline-block text-center play-button-pulse"
-            role="button"
-            aria-label={locale === 'sv' ? 'Lek med Luggisarna - interaktivt spel' : 'Play with the Luggies - interactive game'}
-          >
-            🎮 {t('playButton')}
-          </a>
+          <div className="flex flex-col items-center gap-3 mt-4">
+            <p className="text-sm opacity-80 text-center max-w-md">
+              {t('playDescription')}
+            </p>
+            <a
+              href={`/${locale}/play`}
+              className="rounded-full bg-gradient-to-r from-yellow-300 via-blue-400 to-purple-400 text-white px-8 py-4 min-h-[56px] text-lg sm:text-xl font-bold cursor-pointer shadow-2xl hover:scale-105 active:scale-95 transition-transform inline-flex items-center justify-center play-button-pulse focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 touch-manipulation"
+              role="button"
+              aria-label={t('playAriaLabel')}
+            >
+              🎮 {t('playButton')}
+            </a>
+          </div>
         </section>
       </main>
 
       <footer className="opacity-70 text-sm py-8" role="contentinfo">
-        <nav aria-label={locale === 'sv' ? 'Sociala medier' : 'Social media'}>
+        <nav aria-label={t('socialMediaAriaLabel')}>
           <a 
             href={locale === 'sv' ? 'https://youtube.com/@Luggisarna' : 'https://youtube.com/@TheLuggies'} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hover:underline"
-            aria-label={locale === 'sv' ? 'Besök vår YouTube-kanal' : 'Visit our YouTube channel'}
+            className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            aria-label={t('youtubeAriaLabel')}
           >
             {t('watchYouTube')}
           </a>

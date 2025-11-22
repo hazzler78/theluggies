@@ -1,6 +1,7 @@
 "use client";
 import {useLocale, useTranslations} from '@/contexts/LocaleContext';
 import {useEffect, useState} from 'react';
+import {VideoSkeleton} from './VideoSkeleton';
 
 interface YouTubeVideo {
   id: string;
@@ -68,19 +69,27 @@ export function YouTubeSection() {
       </h2>
       
       {loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <VideoSkeleton key={i} />
+          ))}
+        </div>
+      )}
+      
+      {error && !loading && (
         <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-          <p className="mt-2 opacity-60">Loading videos...</p>
+          <div className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300">
+            <span className="text-xl">⚠️</span>
+            <p className="font-medium">{error}</p>
+          </div>
+          <p className="mt-4 text-sm opacity-70">
+            {t('videoErrorFallback')}
+          </p>
         </div>
       )}
       
-      {error && (
-        <div className="text-center py-4 text-red-600 dark:text-red-400">
-          <p>⚠️ {error}</p>
-        </div>
-      )}
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {!loading && !error && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {videos.map((video, idx) => (
           <div 
             key={video.id || idx}
@@ -120,21 +129,24 @@ export function YouTubeSection() {
             )}
           </div>
         ))}
-      </div>
+        </div>
+      )}
 
-      <div className="text-center mt-8">
-        <a 
-          href={channelUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition-colors"
-        >
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-          </svg>
-          {t('subscribeYouTube')} {channelHandle}
-        </a>
-      </div>
+      {!loading && (
+        <div className="text-center mt-8">
+          <a 
+            href={channelUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-red-600 text-white px-6 py-3 min-h-[44px] font-semibold hover:bg-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 touch-manipulation"
+          >
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            {t('subscribeYouTube')} {channelHandle}
+          </a>
+        </div>
+      )}
     </div>
   );
 }

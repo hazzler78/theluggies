@@ -137,6 +137,13 @@ export default async function LocaleLayout({
         description: locale === 'sv' 
           ? 'Musikäventyr där alla är olika - och det är okej! Färgglada karaktärer som sprider glädje och inkludering till neurodivergerande barn.'
           : 'Musical adventures where everyone\'s different - and that\'s okay! Colorful characters bringing joy and inclusivity to neurodivergent children.',
+        foundingDate: '2024',
+        audience: {
+          '@type': 'Audience',
+          audienceType: locale === 'sv' 
+            ? 'Neurodivergerande barn och deras familjer'
+            : 'Neurodivergent children and their families',
+        },
       },
       {
         '@type': 'WebSite',
@@ -179,6 +186,18 @@ export default async function LocaleLayout({
         contentUrl: locale === 'sv' 
           ? 'https://youtube.com/@Luggisarna'
           : 'https://youtube.com/@TheLuggies',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${baseUrl}/${locale}/#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: locale === 'sv' ? 'Hem' : 'Home',
+            item: `${baseUrl}/${locale}`,
+          },
+        ],
       }
     ],
   };

@@ -26,26 +26,51 @@ export function NewsletterForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex gap-2 items-center">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder={t('emailPlaceholder')}
-        className="flex-1 rounded-xl border px-4 py-3 min-w-0"
-        aria-label="Email address"
-      />
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="rounded-xl bg-foreground text-background px-4 py-3 font-semibold"
-      >
-        {status === 'loading' ? '...' : t('subscribe')}
-      </button>
-      {status === 'success' && <span className="text-green-600 ml-2">{t('thanks')}</span>}
-      {status === 'error' && <span className="text-red-600 ml-2">{t('tryAgain')}</span>}
-    </form>
+    <div className="w-full">
+      <p className="text-sm opacity-90 mb-3 text-center">
+        {t('newsletterBenefit')}
+      </p>
+      <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+        <label htmlFor="newsletter-email" className="sr-only">
+          {t('emailPlaceholder')}
+        </label>
+        <input
+          id="newsletter-email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t('emailPlaceholder')}
+          className="flex-1 rounded-xl border px-4 py-3 min-h-[44px] min-w-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+          aria-label="Email address"
+        />
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="rounded-xl bg-foreground text-background px-4 py-3 min-h-[44px] font-semibold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-opacity disabled:opacity-50 touch-manipulation"
+        >
+          {status === 'loading' ? '...' : t('subscribe')}
+        </button>
+      </form>
+      {status === 'success' && (
+        <div className="mt-3 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800" role="status" aria-live="polite">
+          <p className="text-green-700 dark:text-green-300 text-sm font-semibold text-center mb-1">
+            ✨ {t('thanks')}
+          </p>
+          <p className="text-green-600 dark:text-green-400 text-xs text-center opacity-90">
+            {t('newsletterSuccess')}
+          </p>
+        </div>
+      )}
+      {status === 'error' && (
+        <p className="text-red-600 dark:text-red-400 mt-2 text-sm text-center" role="alert" aria-live="assertive">
+          {t('tryAgain')}
+        </p>
+      )}
+      <p className="text-xs opacity-70 mt-2 text-center">
+        {t('newsletterPrivacy')}
+      </p>
+    </div>
   );
 }
 
