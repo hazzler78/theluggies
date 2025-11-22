@@ -66,7 +66,9 @@
     "faq3Question": "Kan jag titta på mobila enheter?",
     "faq3Answer": "Absolut! Luggisarna är helt optimerat för mobilvisning. Du kan titta på YouTube från vilken enhet som helst - telefon, surfplatta eller dator.",
     "faq4Question": "Är innehållet gratis att titta på?",
-    "faq4Answer": "Ja, alla avsnitt är helt gratis att titta på via YouTube. Prenumerera bara på vår kanal för att få ett meddelande när nya avsnitt släpps!"
+    "faq4Answer": "Ja, alla avsnitt är helt gratis att titta på via YouTube. Prenumerera bara på vår kanal för att få ett meddelande när nya avsnitt släpps!",
+    "subscriberBadgeText": "Gå med {count} Luggisarna-fans på YouTube",
+    "subscriberBadgeAriaLabel": "Gå med {count} Luggisarna-fans på YouTube"
   }
 }
 

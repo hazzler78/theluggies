@@ -2,6 +2,7 @@
 import {useTranslations, useLocale} from '@/contexts/LocaleContext';
 import {NewsletterForm} from './NewsletterForm';
 import {YouTubeIcon} from './icons';
+import {YouTubeSubscriberBadge} from './YouTubeSubscriberBadge';
 
 export function HeroSection() {
   const t = useTranslations('site');
@@ -22,16 +23,21 @@ export function HeroSection() {
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-4 opacity-90 leading-relaxed">
               {t('heroValueProp')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-4 lg:mb-6">
-              <a
-                href={channelUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 min-h-[44px] text-sm sm:text-base font-semibold hover:bg-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 touch-manipulation whitespace-nowrap"
-              >
-                <YouTubeIcon className="flex-shrink-0" size={20} />
-                <span className="truncate">{t('heroCTA')}</span>
-              </a>
+            <div className="flex flex-col gap-3 sm:gap-4 justify-center lg:justify-start mb-4 lg:mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+                <a
+                  href={channelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 min-h-[44px] text-sm sm:text-base font-semibold hover:bg-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 touch-manipulation whitespace-nowrap"
+                >
+                  <YouTubeIcon className="flex-shrink-0" size={20} />
+                  <span className="truncate">{t('heroCTA')}</span>
+                </a>
+              </div>
+              <div className="flex justify-center lg:justify-start">
+                <YouTubeSubscriberBadge />
+              </div>
             </div>
           </div>
 

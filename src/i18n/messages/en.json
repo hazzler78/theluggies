@@ -66,7 +66,9 @@
     "faq3Question": "Can I watch on mobile devices?",
     "faq3Answer": "Absolutely! The Luggies is fully optimized for mobile viewing. You can watch on YouTube from any device - phone, tablet, or computer.",
     "faq4Question": "Is the content free to watch?",
-    "faq4Answer": "Yes, all episodes are completely free to watch on YouTube. Just subscribe to our channel to get notified when new episodes are released!"
+    "faq4Answer": "Yes, all episodes are completely free to watch on YouTube. Just subscribe to our channel to get notified when new episodes are released!",
+    "subscriberBadgeText": "Join {count} Luggies fans on YouTube",
+    "subscriberBadgeAriaLabel": "Join {count} Luggies fans on YouTube"
   }
 }
 
