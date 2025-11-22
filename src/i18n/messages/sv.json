@@ -1,12 +1,13 @@
 {
   "site": {
     "title": "The Luggies",
+    "titleFull": "Luggisarna - Musikäventyr för neurodivergerande barn",
     "tagline": "Musikäventyr där alla är olika - och det är okej!",
     "newsletter": "Prenumerera på vårt nyhetsbrev",
-    "newsletterBenefit": "Få ett meddelande när nya avsnitt släpps!",
+    "newsletterBenefit": "Missa aldrig ett nytt avsnitt - gå med i vår gemenskap av familjer!",
     "newsletterPrivacy": "Vi skickar aldrig spam. Avprenumerera när som helst.",
     "emailPlaceholder": "Din e‑post",
-    "subscribe": "Prenumerera",
+    "subscribe": "Gå med gratis",
     "nextEpisode": "Nästa avsnitt",
     "saturday": "Varje lördag kl 09:00 svensk tid",
     "latestVideos": "Senaste Videor",
@@ -49,7 +50,23 @@
     "videoErrorFallback": "Du kan fortfarande besöka vår YouTube-kanal för att se alla videor.",
     "skipToContent": "Hoppa till huvudinnehåll",
     "switchToEnglish": "English",
-    "switchToSwedish": "Svenska"
+    "switchToSwedish": "Svenska",
+    "heroValueProp": "Inkluderande musikinnehåll designat för neurodivergerande barn och deras familjer. Nya avsnitt varje lördag!",
+    "heroCTA": "Se senaste avsnittet",
+    "aboutBullet1": "Skapat specifikt för neurodivergerande barn",
+    "aboutBullet2": "Tillgängligt och engagerande för olika behov",
+    "aboutBullet3": "Nya avsnitt släpps varje lördag",
+    "aboutBullet4": "Säkert, positivt och inkluderande innehåll",
+    "faqTitle": "Vanliga frågor",
+    "faqAriaLabel": "Vanliga frågor",
+    "faq1Question": "Hur ofta släpps nya avsnitt?",
+    "faq1Answer": "Nya avsnitt släpps varje lördag. Den engelska kanalen släpper kl 15:00 svensk tid, och den svenska kanalen släpper kl 09:00 svensk tid.",
+    "faq2Question": "Är innehållet lämpligt för alla åldrar?",
+    "faq2Answer": "Ja! Luggisarna är designat för barn i alla åldrar, med fokus på att vara tillgängligt och engagerande för neurodivergerande barn. Allt innehåll är familjevänligt och positivt.",
+    "faq3Question": "Kan jag titta på mobila enheter?",
+    "faq3Answer": "Absolut! Luggisarna är helt optimerat för mobilvisning. Du kan titta på YouTube från vilken enhet som helst - telefon, surfplatta eller dator.",
+    "faq4Question": "Är innehållet gratis att titta på?",
+    "faq4Answer": "Ja, alla avsnitt är helt gratis att titta på via YouTube. Prenumerera bara på vår kanal för att få ett meddelande när nya avsnitt släpps!"
   }
 }
 

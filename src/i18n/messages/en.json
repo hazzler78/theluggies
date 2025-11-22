@@ -1,12 +1,13 @@
 {
   "site": {
     "title": "The Luggies",
+    "titleFull": "The Luggies - Musical Adventures for Neurodivergent Kids",
     "tagline": "Musical adventures where everyone's different - and that's okay!",
     "newsletter": "Join our newsletter",
-    "newsletterBenefit": "Get notified when new episodes drop!",
+    "newsletterBenefit": "Never miss a new episode - join our community of families!",
     "newsletterPrivacy": "We'll never spam you. Unsubscribe anytime.",
     "emailPlaceholder": "Your email",
-    "subscribe": "Subscribe",
+    "subscribe": "Join Free",
     "nextEpisode": "Next episode",
     "saturday": "Every Saturday at 15:00 Stockholm time",
     "latestVideos": "Latest Videos",
@@ -49,7 +50,23 @@
     "videoErrorFallback": "You can still visit our YouTube channel to see all videos.",
     "skipToContent": "Skip to main content",
     "switchToEnglish": "English",
-    "switchToSwedish": "Svenska"
+    "switchToSwedish": "Svenska",
+    "heroValueProp": "Inclusive musical content designed for neurodivergent children and their families. New episodes every Saturday!",
+    "heroCTA": "Watch Latest Episode",
+    "aboutBullet1": "Created specifically for neurodivergent children",
+    "aboutBullet2": "Accessible and engaging for diverse needs",
+    "aboutBullet3": "New episodes released every Saturday",
+    "aboutBullet4": "Safe, positive, and inclusive content",
+    "faqTitle": "Frequently Asked Questions",
+    "faqAriaLabel": "Frequently asked questions",
+    "faq1Question": "How often are new episodes released?",
+    "faq1Answer": "New episodes are released every Saturday. The English channel releases at 15:00 Stockholm time, and the Swedish channel releases at 09:00 Swedish time.",
+    "faq2Question": "Is the content appropriate for all ages?",
+    "faq2Answer": "Yes! The Luggies is designed for children of all ages, with a focus on being accessible and engaging for neurodivergent children. All content is family-friendly and positive.",
+    "faq3Question": "Can I watch on mobile devices?",
+    "faq3Answer": "Absolutely! The Luggies is fully optimized for mobile viewing. You can watch on YouTube from any device - phone, tablet, or computer.",
+    "faq4Question": "Is the content free to watch?",
+    "faq4Answer": "Yes, all episodes are completely free to watch on YouTube. Just subscribe to our channel to get notified when new episodes are released!"
   }
 }
 

@@ -90,7 +90,7 @@ function AnimatedCharacter({color, name, description, index}: AnimatedCharacterP
 
   return (
     <div className="flex flex-col items-center text-center p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow">
-      <div className="relative w-32 h-32 sm:w-40 sm:h-40 mb-4">
+      <div className="relative w-48 h-48 sm:w-56 sm:h-56 mb-4">
         <Image
           src={currentImage === 'idle' ? idleImage : surprisedImage}
           alt={`${name} Luggie character with ${currentImage} expression`}
@@ -98,7 +98,7 @@ function AnimatedCharacter({color, name, description, index}: AnimatedCharacterP
           className={`object-contain drop-shadow-lg transition-opacity duration-300 ${
             isTransitioning ? 'opacity-0' : 'opacity-100'
           }`}
-          sizes="(max-width: 640px) 128px, 160px"
+          sizes="(max-width: 640px) 192px, 224px"
         />
       </div>
       <h3 className="text-lg sm:text-xl font-bold mb-2">
@@ -137,7 +137,7 @@ export function CharacterPreview() {
       className="w-full max-w-5xl"
       aria-label={t('charactersAriaLabel')}
     >
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-center">
         {t('meetCharacters')}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">

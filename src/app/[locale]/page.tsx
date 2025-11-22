@@ -6,6 +6,9 @@ import {YouTubeSection} from '../../components/YouTubeSection';
 import {NewsletterForm} from '../../components/NewsletterForm';
 import {CharacterPreview} from '../../components/CharacterPreview';
 import {AboutSection} from '../../components/AboutSection';
+import {HeroSection} from '../../components/HeroSection';
+import {FAQSection} from '../../components/FAQSection';
+import {StickyNewsletterCTA} from '../../components/StickyNewsletterCTA';
 
 export default function Home() {
   const t = useTranslations('site');
@@ -19,26 +22,29 @@ export default function Home() {
         {t('skipToContent')}
       </a>
       <header className="w-full max-w-5xl flex items-center justify-between gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold flex-shrink-0">{t('title')}</h1>
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold flex-shrink-0">{t('titleFull')}</h1>
         <LocaleSwitcher />
       </header>
 
       <main id="main-content" className="w-full flex flex-col items-center gap-10">
-        <p className="text-lg sm:text-xl opacity-95 font-medium text-center px-4" role="doc-subtitle">{t('tagline')}</p>
+        <p className="text-xl sm:text-2xl lg:text-3xl opacity-95 font-semibold text-center px-4 max-w-4xl" role="doc-subtitle">{t('tagline')}</p>
 
-        {/* Character Preview Section */}
-        <CharacterPreview />
+        {/* Hero Section with CTA */}
+        <HeroSection />
 
-        {/* About Section */}
-        <AboutSection />
-
-        {/* YouTube Video Section */}
+        {/* YouTube Video Section - Moved up for social proof */}
         <section 
           className="w-full max-w-5xl" 
           aria-label={t('latestVideosAriaLabel')}
         >
           <YouTubeSection />
         </section>
+
+        {/* Character Preview Section */}
+        <CharacterPreview />
+
+        {/* About Section */}
+        <AboutSection />
 
         {/* Next Episode Countdown */}
         <section 
@@ -51,12 +57,15 @@ export default function Home() {
           <YouTubeSchedule />
         </section>
 
+        {/* FAQ Section */}
+        <FAQSection />
+
         {/* Newsletter & Play Button */}
         <section 
           className="w-full max-w-md flex flex-col gap-4 items-center"
           aria-label={t('newsletterAriaLabel')}
         >
-          <h2 className="text-xl sm:text-2xl font-bold mb-2 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-center">
             {t('newsletter')}
           </h2>
           <NewsletterForm />
@@ -71,11 +80,13 @@ export default function Home() {
               role="button"
               aria-label={t('playAriaLabel')}
             >
-              🎮 {t('playButton')}
+              <span aria-hidden="true">🎮</span> {t('playButton')}
             </a>
           </div>
         </section>
       </main>
+
+      <StickyNewsletterCTA />
 
       <footer className="opacity-70 text-sm py-8" role="contentinfo">
         <nav aria-label={t('socialMediaAriaLabel')}>
