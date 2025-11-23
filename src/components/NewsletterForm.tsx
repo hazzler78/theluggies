@@ -27,9 +27,6 @@ export function NewsletterForm() {
 
   return (
     <div className="w-full">
-      <p className="text-sm opacity-90 mb-3 text-center">
-        {t('newsletterBenefit')}
-      </p>
       <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
         <label htmlFor="newsletter-email" className="sr-only">
           {t('emailPlaceholder')}
