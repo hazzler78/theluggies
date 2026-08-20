@@ -6,16 +6,14 @@ param(
     [string]$YouTubeId,
     
     [Parameter(Mandatory=$true)]
-    [string]$TitleSv,
+    [ValidateSet('sv','en')]
+    [string]$Locale,
     
     [Parameter(Mandatory=$true)]
-    [string]$TitleEn,
+    [string]$Title,
     
     [Parameter(Mandatory=$false)]
-    [string]$DescriptionSv = "",
-    
-    [Parameter(Mandatory=$false)]
-    [string]$DescriptionEn = "",
+    [string]$Description = "",
     
     [Parameter(Mandatory=$false)]
     [string]$ApiUrl = "https://theluggies.com/api/newsletter/send"
@@ -32,17 +30,14 @@ if (-not $env:NEWSLETTER_API_KEY) {
     exit 1
 }
 
-Write-Host "📧 Preparing to send newsletter..." -ForegroundColor Cyan
+Write-Host "Preparing to send newsletter..." -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Video ID: $YouTubeId" -ForegroundColor White
-Write-Host "Swedish Title: $TitleSv" -ForegroundColor White
-Write-Host "English Title: $TitleEn" -ForegroundColor White
+Write-Host "Locale: $Locale" -ForegroundColor White
+Write-Host "Title: $Title" -ForegroundColor White
 
-if ($DescriptionSv) {
-    Write-Host "Swedish Description: $DescriptionSv" -ForegroundColor White
-}
-if ($DescriptionEn) {
-    Write-Host "English Description: $DescriptionEn" -ForegroundColor White
+if ($Description) {
+    Write-Host "Description: $Description" -ForegroundColor White
 }
 
 Write-Host ""
@@ -52,16 +47,13 @@ Write-Host ""
 # Build request body
 $body = @{
     youtubeId = $YouTubeId
-    titleSv = $TitleSv
-    titleEn = $TitleEn
+    locale = $Locale
+    title = $Title
     apiKey = $env:NEWSLETTER_API_KEY
 }
 
-if ($DescriptionSv) {
-    $body.descriptionSv = $DescriptionSv
-}
-if ($DescriptionEn) {
-    $body.descriptionEn = $DescriptionEn
+if ($Description) {
+    $body.description = $Description
 }
 
 $jsonBody = $body | ConvertTo-Json

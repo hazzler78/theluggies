@@ -107,10 +107,9 @@ Write-Host ""
 # Build request body
 $body = @{
     youtubeId = $videoId
-    titleSv = $title
-    titleEn = $title
-    descriptionSv = $description
-    descriptionEn = $description
+    locale = $Locale
+    title = $title
+    description = $description
     apiKey = $newsletterApiKey
 } | ConvertTo-Json -Depth 10
 
