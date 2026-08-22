@@ -14,9 +14,9 @@ const localeMetadata = {
     keywords: 'The Luggies, neurodivergent kids, inclusive children content, music for kids, autism friendly, ADHD kids, childrens YouTube, Swedish kids show, educational entertainment',
   },
   sv: {
-    title: 'The Luggies - Musikäventyr för neurodivergerande barn | YouTube-kanal',
-    description: 'Musikäventyr där alla är olika - och det är okej! Följ Luggisarna - färgglada karaktärer som sprider glädje, musik och inkludering till neurodivergerande barn. Nya avsnitt varje lördag!',
-    keywords: 'Luggisarna, neurodivergerande barn, inkluderande barninnehåll, musik för barn, autism, ADHD barn, barn YouTube, svensk barnshow, pedagogisk underhållning',
+    title: 'Luggisarna – NPF-anpassade barnprogram | YouTube-kanal',
+    description: 'NPF-anpassade barnprogram med musikäventyr. Följ Luggisarna – färgglada karaktärer där alla är olika och det är okej. Nya avsnitt varje lördag!',
+    keywords: 'Luggisarna, NPF-anpassade barnprogram, NPF, barnprogram, musik för barn, inkluderande barninnehåll, barn YouTube, svensk barnshow'
   }
 };
 
@@ -135,13 +135,13 @@ export default async function LocaleLayout({
           'https://youtube.com/@Luggisarna',
         ],
         description: locale === 'sv' 
-          ? 'Musikäventyr där alla är olika - och det är okej! Färgglada karaktärer som sprider glädje och inkludering till neurodivergerande barn.'
+          ? 'NPF-anpassade barnprogram med musikäventyr. Färgglada karaktärer där alla är olika och det är okej.'
           : 'Musical adventures where everyone\'s different - and that\'s okay! Colorful characters bringing joy and inclusivity to neurodivergent children.',
         foundingDate: '2024',
         audience: {
           '@type': 'Audience',
           audienceType: locale === 'sv' 
-            ? 'Neurodivergerande barn och deras familjer'
+            ? 'Familjer som söker NPF-anpassade barnprogram'
             : 'Neurodivergent children and their families',
         },
       },
@@ -165,7 +165,7 @@ export default async function LocaleLayout({
         '@id': `${baseUrl}/${locale}/#webpage`,
         url: `${baseUrl}/${locale}`,
         name: locale === 'sv' 
-          ? 'The Luggies - Musikäventyr för neurodivergerande barn'
+          ? 'Luggisarna – NPF-anpassade barnprogram'
           : 'The Luggies - Musical Adventures for Neurodivergent Kids',
         isPartOf: {
           '@id': `${baseUrl}/#website`,
