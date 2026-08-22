@@ -2,6 +2,7 @@ export const runtime = 'edge';
 
 import {getRequestContext} from '@cloudflare/next-on-pages';
 import type {NewsletterLocale} from '@/lib/newsletter-email';
+import {isYouTubeShort} from '@/lib/youtube-longform';
 
 interface CloudflareEnv {
   DB: D1Database;
@@ -29,14 +30,35 @@ interface YouTubeSearchResponse {
 
 async function getLatestVideo(channelId: string, apiKey: string): Promise<YouTubeVideo | null> {
   try {
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=1&type=video`;
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=8&type=video`;
     const response = await fetch(url);
     if (!response.ok) {
       console.error('YouTube API error:', response.status, await response.text());
       return null;
     }
     const data = (await response.json()) as YouTubeSearchResponse;
-    const item = data.items?.[0];
+    const items = data.items || [];
+    if (!items.length) return null;
+    const ids = items.map((i) => i.id.videoId).join(',');
+    const det = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${apiKey}`
+    );
+    const durationById: Record<string, string> = {};
+    if (det.ok) {
+      const detJson = (await det.json()) as {
+        items?: Array<{id: string; contentDetails?: {duration?: string}}>;
+      };
+      for (const it of detJson.items || []) {
+        durationById[it.id] = it.contentDetails?.duration || '';
+      }
+    }
+    const item = items.find(
+      (i) =>
+        !isYouTubeShort({
+          durationIso: durationById[i.id.videoId],
+          title: i.snippet.title,
+        })
+    );
     if (!item) return null;
     return {
       id: item.id.videoId,

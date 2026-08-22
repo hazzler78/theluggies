@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isYouTubeShort } from '@/lib/youtube-longform';
 
 export const runtime = 'edge';
 
@@ -33,14 +34,14 @@ export async function GET(request: NextRequest) {
 
     const channelId = CHANNEL_IDS[locale];
     
-    // Fetch latest videos from the channel
+    // Over-fetch: Shorts share the uploads feed. Site shows longform only.
     const response = await fetch(
       `${YOUTUBE_API_URL}/search?` +
       `part=snippet&` +
       `channelId=${channelId}&` +
       `order=date&` +
       `type=video&` +
-      `maxResults=6&` +
+      `maxResults=15&` +
       `key=${YOUTUBE_API_KEY}`
     );
 
@@ -58,13 +59,35 @@ export async function GET(request: NextRequest) {
         };
       }>;
     };
-    
-    const videos: YouTubeVideo[] = data.items.map((item) => ({
-      id: item.id.videoId,
-      title: item.snippet.title,
-      publishedAt: item.snippet.publishedAt,
-      thumbnail: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url
-    }));
+
+    const ids = data.items.map((item) => item.id.videoId).filter(Boolean);
+    const durationById: Record<string, string> = {};
+    if (ids.length) {
+      const det = await fetch(
+        `${YOUTUBE_API_URL}/videos?part=contentDetails&id=${ids.join(',')}&key=${YOUTUBE_API_KEY}`
+      );
+      if (det.ok) {
+        const detJson = (await det.json()) as {
+          items?: Array<{ id: string; contentDetails?: { duration?: string } }>;
+        };
+        for (const it of detJson.items || []) {
+          durationById[it.id] = it.contentDetails?.duration || '';
+        }
+      }
+    }
+
+    const videos: YouTubeVideo[] = data.items
+      .filter((item) => !isYouTubeShort({
+        durationIso: durationById[item.id.videoId],
+        title: item.snippet.title,
+      }))
+      .slice(0, 6)
+      .map((item) => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        publishedAt: item.snippet.publishedAt,
+        thumbnail: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url
+      }));
 
     // Cache for 1 hour
     return NextResponse.json(videos, {
